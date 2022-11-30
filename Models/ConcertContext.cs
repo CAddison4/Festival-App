@@ -17,12 +17,6 @@ namespace TeamRedInternalProject.Models
         }
 
         public virtual DbSet<Artist> Artists { get; set; } = null!;
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; } = null!;
-        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; } = null!;
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; } = null!;
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; } = null!;
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; } = null!;
-        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; } = null!;
         public virtual DbSet<Festival> Festivals { get; set; } = null!;
         public virtual DbSet<FestivalTicketType> FestivalTicketTypes { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
@@ -35,7 +29,7 @@ namespace TeamRedInternalProject.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server= LAPTOP-N6KMR0RD\\SQLEXPRESS;Database=Concert;Trusted_Connection=True; TrustServerCertificate=True ");
+                optionsBuilder.UseSqlServer("Server=ADAM_PC\\SSD_SQL_SERVER;Database=Concert;Trusted_Connection=True;TrustServerCertificate=True ");
             }
         }
 
@@ -51,95 +45,6 @@ namespace TeamRedInternalProject.Models
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("artistName");
-            });
-
-            modelBuilder.Entity<AspNetRole>(entity =>
-            {
-                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedName] IS NOT NULL)");
-
-                entity.Property(e => e.Name).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedName).HasMaxLength(256);
-            });
-
-            modelBuilder.Entity<AspNetRoleClaim>(entity =>
-            {
-                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.AspNetRoleClaims)
-                    .HasForeignKey(d => d.RoleId);
-            });
-
-            modelBuilder.Entity<AspNetUser>(entity =>
-            {
-                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
-
-                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
-
-                entity.Property(e => e.Email).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
-
-                entity.Property(e => e.UserName).HasMaxLength(256);
-
-                entity.HasMany(d => d.Roles)
-                    .WithMany(p => p.Users)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "AspNetUserRole",
-                        l => l.HasOne<AspNetRole>().WithMany().HasForeignKey("RoleId"),
-                        r => r.HasOne<AspNetUser>().WithMany().HasForeignKey("UserId"),
-                        j =>
-                        {
-                            j.HasKey("UserId", "RoleId");
-
-                            j.ToTable("AspNetUserRoles");
-
-                            j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
-                        });
-            });
-
-            modelBuilder.Entity<AspNetUserClaim>(entity =>
-            {
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserClaims)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserLogin>(entity =>
-            {
-                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
-
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
-
-                entity.Property(e => e.LoginProvider).HasMaxLength(128);
-
-                entity.Property(e => e.ProviderKey).HasMaxLength(128);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserLogins)
-                    .HasForeignKey(d => d.UserId);
-            });
-
-            modelBuilder.Entity<AspNetUserToken>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
-
-                entity.Property(e => e.LoginProvider).HasMaxLength(128);
-
-                entity.Property(e => e.Name).HasMaxLength(128);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.AspNetUserTokens)
-                    .HasForeignKey(d => d.UserId);
             });
 
             modelBuilder.Entity<Festival>(entity =>
@@ -161,11 +66,11 @@ namespace TeamRedInternalProject.Models
                     .WithMany(p => p.Festivals)
                     .UsingEntity<Dictionary<string, object>>(
                         "FestivalArtist",
-                        l => l.HasOne<Artist>().WithMany().HasForeignKey("ArtistId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__FestivalA__artis__6754599E"),
-                        r => r.HasOne<Festival>().WithMany().HasForeignKey("FestivalId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__FestivalA__festi__66603565"),
+                        l => l.HasOne<Artist>().WithMany().HasForeignKey("ArtistId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__FestivalA__artis__29221CFB"),
+                        r => r.HasOne<Festival>().WithMany().HasForeignKey("FestivalId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__FestivalA__festi__282DF8C2"),
                         j =>
                         {
-                            j.HasKey("FestivalId", "ArtistId").HasName("PK__Festival__8C7ED65C9F9FF025");
+                            j.HasKey("FestivalId", "ArtistId").HasName("PK__Festival__8C7ED65C7CA0F3BA");
 
                             j.ToTable("FestivalArtist");
 
@@ -178,7 +83,7 @@ namespace TeamRedInternalProject.Models
             modelBuilder.Entity<FestivalTicketType>(entity =>
             {
                 entity.HasKey(e => new { e.FestivalId, e.TicketTypeId })
-                    .HasName("PK__Festival__B5921AAB14D2AFE2");
+                    .HasName("PK__Festival__B5921AABDEB1D4D5");
 
                 entity.ToTable("FestivalTicketType");
 
@@ -192,13 +97,13 @@ namespace TeamRedInternalProject.Models
                     .WithMany(p => p.FestivalTicketTypes)
                     .HasForeignKey(d => d.FestivalId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FestivalT__festi__6C190EBB");
+                    .HasConstraintName("FK__FestivalT__festi__2DE6D218");
 
                 entity.HasOne(d => d.TicketType)
                     .WithMany(p => p.FestivalTicketTypes)
                     .HasForeignKey(d => d.TicketTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FestivalT__ticke__6D0D32F4");
+                    .HasConstraintName("FK__FestivalT__ticke__2EDAF651");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -220,7 +125,7 @@ namespace TeamRedInternalProject.Models
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.Email)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Order__email__5FB337D6");
+                    .HasConstraintName("FK__Order__email__2180FB33");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -239,19 +144,19 @@ namespace TeamRedInternalProject.Models
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.FestivalId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Ticket__festival__6FE99F9F");
+                    .HasConstraintName("FK__Ticket__festival__31B762FC");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Ticket__orderID__71D1E811");
+                    .HasConstraintName("FK__Ticket__orderID__339FAB6E");
 
                 entity.HasOne(d => d.TicketType)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.TicketTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Ticket__ticketTy__70DDC3D8");
+                    .HasConstraintName("FK__Ticket__ticketTy__32AB8735");
             });
 
             modelBuilder.Entity<TicketType>(entity =>
@@ -273,7 +178,7 @@ namespace TeamRedInternalProject.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__User__AB6E616519159D31");
+                    .HasName("PK__User__AB6E6165D36BCBB7");
 
                 entity.ToTable("User");
 
