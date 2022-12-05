@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# App Settings - igonoring this to avoid updating connection string locally
+appsettings.json
+
+# ConcertContext - igonoring this to avoid updating connection string locally
+Models/ConcertContext.cs
