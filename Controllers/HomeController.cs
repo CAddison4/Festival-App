@@ -7,14 +7,17 @@ namespace TeamRedInternalProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ConcertContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ConcertContext db)
         {
             _logger = logger;
+            _db = db;   
         }
 
         public IActionResult Index()
         {
+            var artists = _db.Artists;
             return View();
         }
 
