@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamRedInternalProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-//Hi everyone, welcome to program.cs
+//Visual Studio is the bane of Adam's existence
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
