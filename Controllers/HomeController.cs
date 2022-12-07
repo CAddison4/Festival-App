@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TeamRedInternalProject.Models;
 
+// Not logged in Users, Artists, Index/Homepage, Login/Register 
 namespace TeamRedInternalProject.Controllers
 {
     public class HomeController : Controller
@@ -14,6 +15,12 @@ namespace TeamRedInternalProject.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        //list of Artists Performing
+        public IActionResult Artist()
         {
             return View();
         }
