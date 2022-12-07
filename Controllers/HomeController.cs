@@ -20,7 +20,8 @@ namespace TeamRedInternalProject.Controllers
         {
             var artists = _db.Artists;
             return View();
-            // THIS IS A HALEY COMMNENT
+            // THIS IS A HALEY COMMENT
+            //Cat Test Comment
         }
 
         //list of Artists Performing
