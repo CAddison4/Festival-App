@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TeamRedInternalProject.Data;
 using TeamRedInternalProject.Models;
 
 namespace TeamRedInternalProject.Controllers
@@ -7,15 +8,19 @@ namespace TeamRedInternalProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ConcertContext _db;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _db = new ConcertContext();
         }
 
         public IActionResult Index()
         {
-            return View();
+            
+            var artists = _db.Artists.ToList();
+            return View(artists);
         }
 
         public IActionResult Privacy()
