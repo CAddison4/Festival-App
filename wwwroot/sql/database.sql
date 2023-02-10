@@ -45,7 +45,8 @@ CREATE TABLE CurrentFestival (
 
 CREATE TABLE Artist (
 	artistID		INT IDENTITY	PRIMARY KEY,
-	artistName		VARCHAR(255)	NOT NULL
+	artistName		VARCHAR(255)	NOT NULL,
+	artistBio		VARCHAR(4095)
 );
 
 CREATE TABLE FestivalArtist (
@@ -87,13 +88,13 @@ CREATE TABLE Ticket (
 INSERT INTO TicketType VALUES('General Admission', 50.00);
 
 /* Seed Artist */
-INSERT INTO Artist VALUES('Billy Talent');
-INSERT INTO Artist VALUES('The Wiggles');
-INSERT INTO Artist VALUES('Sum 41');
-INSERT INTO Artist VALUES('Drake');
-INSERT INTO Artist VALUES('Prince (Hologram)');
-INSERT INTO Artist VALUES('Beethoven');
-INSERT INTO Artist VALUES('Toto');
+INSERT INTO Artist VALUES('Billy Talent', 'sample description');
+INSERT INTO Artist VALUES('The Wiggles', 'sample description');
+INSERT INTO Artist VALUES('Sum 41', 'sample description');
+INSERT INTO Artist VALUES('Drake', 'sample description');
+INSERT INTO Artist VALUES('Prince (Hologram)', 'sample description');
+INSERT INTO Artist VALUES('Beethoven', 'sample description');
+INSERT INTO Artist VALUES('Toto', 'sample description');
 
 /* Seed Festival */
 INSERT INTO Festival VALUES(CONVERT(DATE, '06/03/2023', 101), 'Vancouver');
