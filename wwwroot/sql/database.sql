@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS FestivalTicketType;
 DROP TABLE IF EXISTS TicketType;
 DROP TABLE IF EXISTS FestivalArtist;
 DROP TABLE IF EXISTS Artist;
+DROP TABLE IF EXISTS CurrentFestival;
 DROP TABLE IF EXISTS Festival;
 DROP TABLE IF EXISTS [Order];
 DROP TABLE IF EXISTS [User];
@@ -35,6 +36,11 @@ CREATE TABLE Festival (
 	festivalID		INT IDENTITY	PRIMARY KEY,
 	[date]			DATE			NOT NULL,
 	[location]		VARCHAR(255)	NOT NULL
+);
+
+CREATE TABLE CurrentFestival (
+	festivalID		INT				PRIMARY KEY,
+	FOREIGN KEY (festivalID)		REFERENCES Festival(festivalID)
 );
 
 CREATE TABLE Artist (
@@ -91,6 +97,9 @@ INSERT INTO Artist VALUES('Toto');
 
 /* Seed Festival */
 INSERT INTO Festival VALUES(CONVERT(DATE, '06/03/2023', 101), 'Vancouver');
+
+/* Seed CurrentFestival */
+INSERT INTO CurrentFestival VALUES(1);
 
 /* Seed FestivalTicketType */
 INSERT INTO FestivalTicketType VALUES(1, 1, 20000);
