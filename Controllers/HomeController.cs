@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TeamRedInternalProject.Models;
+using TeamRedInternalProject.Repositories;
 
 // Not logged in Users, Artists, Index/Homepage, Login/Register 
 namespace TeamRedInternalProject.Controllers
@@ -18,14 +19,16 @@ namespace TeamRedInternalProject.Controllers
 
         public IActionResult Index()
         {
-            var artists = _db.Artists;
             return View();
         }
 
         //list of Artists Performing
-        public IActionResult Artist()
+        public IActionResult Artists()
         {
-            return View();
+            ArtistRepo artistRepo = new ArtistRepo(_db);
+            List<Artist> artists = artistRepo.GetArtists();
+            return View(artists);
+            //return View();
         }
 
         public IActionResult Privacy()
