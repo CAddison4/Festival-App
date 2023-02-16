@@ -11,8 +11,21 @@ namespace TeamRedInternalProject.Repositories
             _db = db;
         }
 
+        public List<Artist> GetArtistsAtCurrentFestival()
+        {
+            Festival currentFestival = _db.Festivals.Where(f => f.FestivalId == 1).First();
+            List<Artist> cfArtists = _db.Artists.Where(a => a.Festivals.Contains(currentFestival)).ToList();
+            return cfArtists;
+        }
+
+        public List<Artist> GetAllArtists()
+        {
+            return _db.Artists.ToList();
+        }
+
         public List<Artist> GetArtists()
         {
+            
 
             //var artistList = from a in _db.Artists
             //                 join f in _db.FestivalArtists on a.ArtistId equals f.FestivalId where a.ArtistId == 
