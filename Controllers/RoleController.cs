@@ -19,7 +19,7 @@ namespace TeamRedInternalProject.Controllers
             _logger = logger;
             _serviveProvider= serviceProvider;
             _userRepo = new UserRepo();
-            _userRoleRepo = new UserRoleRepo(_serviveProvider);
+            _userRoleRepo = new UserRoleRepo(_serviveProvider, _db);
             _db = db;
         }
         // GET: RoleController
@@ -39,32 +39,40 @@ namespace TeamRedInternalProject.Controllers
         // It gives two drop downs - the first contains the user names with
         // the requested user selected. The second drop down contains all
         // possible roles.
-        public ActionResult Edit(string email)
+        public ActionResult Create(string email)
         {
-            var results = _userRepo.GetUsersByEmail(email);
-            return View(results);
+            ViewBag.SelectedUser = email;
+
+            List<User>userList = _userRepo.GetUsers();
+
+            var preUserList = userList.Select( u=> new SelectListItem
+            {
+                Value = u.Email,
+                Text = u.Email
+            }).ToList();
+
+            SelectList userSelectList = new SelectList(preUserList, "Value", "Text");
+
+            ViewBag.UserSelectList = userSelectList;
+            return View();
         }
 
         // Assigns role to user.
         [HttpPost]
-        public async Task<IActionResult> Edit(User user, string email)
+        public async Task<IActionResult> Create(User user)
         {
             string message = string.Empty;
 
             if (ModelState.IsValid)
             {
-                var addUR = await _userRoleRepo.AddUserRole(user.Email,
+             await _userRoleRepo.AddUserRole(user.Email,
                                                             user.Admin);
-                bool results = _userRoleRepo.UpdateUser(email);
+             _userRoleRepo.UpdateUser(user.Email);
 
-                if (results)
-                {
-                    message = "User Updated";
-                }
-            }
+               }
             try
             {
-                return RedirectToAction("Index", "Role", message);
+                return RedirectToAction("Index", "Role", new { email = user.Email });
             }
             catch
             {

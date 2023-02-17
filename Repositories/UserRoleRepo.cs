@@ -7,10 +7,10 @@ namespace TeamRedInternalProject.Repositories
     {
         IServiceProvider serviceProvider;
         private readonly ConcertContext _db;
-        public UserRoleRepo(IServiceProvider serviceProvider)
+        public UserRoleRepo(IServiceProvider serviceProvider, ConcertContext db)
         {
             this.serviceProvider = serviceProvider;
-            _db = new();
+            _db = db;
         }
 
         // Assign a role to a user.

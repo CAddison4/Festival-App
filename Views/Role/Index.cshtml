@@ -43,10 +43,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Admin)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Email">Edit</a> |
-            </td>
         </tr>
 }
     </tbody>
 </table>
+@ViewBag.Message
