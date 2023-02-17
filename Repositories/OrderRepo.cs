@@ -18,7 +18,6 @@ namespace TeamRedInternalProject.Repositories
             {
                 throw (new Exception("Cannot find orders"));
             }
-
             return orders;
         }
     }
