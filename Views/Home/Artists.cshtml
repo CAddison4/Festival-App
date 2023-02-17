@@ -5,44 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Artists</h1>
+<div class="container-fluid p-0">
+    <img src="https://via.placeholder.com/1920x600" class="img-fluid">
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ArtistId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArtistName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArtistBio)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArtistId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArtistName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArtistBio)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container mt-5">
+    <h1>Artists</h1>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@item.ImgPath" class="card-img-top" alt="@item.ArtistName">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ArtistName</h5>
+                        <p class="card-text">@item.ArtistBio</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
