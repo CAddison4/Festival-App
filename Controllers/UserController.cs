@@ -8,16 +8,23 @@ namespace TeamRedInternalProject.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly UserRepo _userRepo;
+        private readonly TicketRepo _ticketRepo;
         public UserController(ILogger<UserController> logger)
         {
             _logger = logger;
             _userRepo = new UserRepo();
+            _ticketRepo = new TicketRepo();
         }
 
-        //View Ticket Details
+        // Display all tickets according to user
         public IActionResult Index()
         {
-            return View();
+            string email = User.Identity.Name;
+            User user = _userRepo.GetUsersByEmail(email);
+            List<Ticket> ticketList = _ticketRepo.GetUserTickets(email);
+
+
+            return View(ticketList);
         }
 
         //Buy Tickets
