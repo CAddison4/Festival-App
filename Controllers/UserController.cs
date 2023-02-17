@@ -12,6 +12,7 @@ namespace TeamRedInternalProject.Controllers
         private readonly TicketRepo _ticketRepo;
         private readonly TicketTypeRepo _ticketTypeRepo;
         private readonly ConcertContext _db;
+        
         public UserController(ILogger<UserController> logger)
         {
             _db = new();
@@ -21,10 +22,15 @@ namespace TeamRedInternalProject.Controllers
             _ticketTypeRepo = new TicketTypeRepo();
         }
 
-        //View Ticket Details
+        // Display all tickets according to user
         public IActionResult Index()
         {
-            return View();
+            string email = User.Identity.Name;
+            User user = _userRepo.GetUsersByEmail(email);
+            List<Ticket> ticketList = _ticketRepo.GetUserTickets(email);
+
+
+            return View(ticketList);
         }
 
         //Buy Tickets

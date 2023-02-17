@@ -5,6 +5,7 @@ namespace TeamRedInternalProject.Repositories
     public class TicketRepo
     {
         private readonly ConcertContext _db;
+
         public TicketRepo()
         {
             _db = new();
@@ -24,9 +25,28 @@ namespace TeamRedInternalProject.Repositories
 
             return ticket;
         }
+        
+        //Get all tickets at the current festival:
+        public List<Ticket> GetAllTickets()
+        {
 
-        public List<Ticket> GetAllTickets() {
-            return _db.Tickets.ToList();
+            List<Ticket> allTickets = _db.Tickets.Where(t => t.Festival.IsCurrent).ToList();
+
+            return allTickets;
+        }
+
+        public List<Ticket> GetUserTickets(string email)
+        {
+            UserRepo userRepo= new UserRepo();
+            List<Ticket> allTicketsByUser = GetAllTickets().Where(to => to.Order.Email== email).ToList();
+
+
+            if (allTicketsByUser == null)
+            {
+                throw (new Exception("Tickets do not exist"));
+            }
+
+            return allTicketsByUser;
         }
     }
 }
