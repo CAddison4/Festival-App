@@ -4,6 +4,7 @@ using TeamRedInternalProject.Models;
 
 namespace TeamRedInternalProject.Repositories
 {
+
     public class UserRepo
     {
         private readonly ConcertContext _db;
