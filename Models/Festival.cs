@@ -11,7 +11,7 @@ public partial class Festival
 
     public string Location { get; set; } = null!;
 
-    public virtual CurrentFestival? CurrentFestival { get; set; }
+    public bool IsCurrent { get; set; }
 
     public virtual ICollection<FestivalTicketType> FestivalTicketTypes { get; } = new List<FestivalTicketType>();
 

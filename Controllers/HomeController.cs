@@ -10,11 +10,13 @@ namespace TeamRedInternalProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ConcertContext _db;
+        private readonly ArtistRepo _artistRepo;
 
         public HomeController(ILogger<HomeController> logger, ConcertContext db)
         {
             _logger = logger;
-            _db = db;   
+            _db = db;
+            _artistRepo = new ArtistRepo(db);
         }
 
         public IActionResult Index()
@@ -25,8 +27,8 @@ namespace TeamRedInternalProject.Controllers
         //list of Artists Performing
         public IActionResult Artists()
         {
-            ArtistRepo artistRepo = new ArtistRepo(_db);
-            List<Artist> artists = artistRepo.GetArtists();
+            
+            List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
             return View(artists);
             //return View();
         }

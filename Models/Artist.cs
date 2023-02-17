@@ -11,5 +11,7 @@ public partial class Artist
 
     public string? ArtistBio { get; set; }
 
+    public string? ImgPath { get; set; }
+
     public virtual ICollection<Festival> Festivals { get; } = new List<Festival>();
 }
