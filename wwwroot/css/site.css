@@ -1,3 +1,7 @@
+/*Layout
+    -------------------------------------------------------------------
+*/
+
 html {
   font-size: 14px;
 }
@@ -15,4 +19,45 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/*forms
+    -----------------------------------------------------------------------
+*/
+.form-h1 {
+    text-align: center;
+}
+
+.main-form {
+    background-color: #d1b8df;
+    width: 400px;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.main-form button {
+    background-color: #a680b8;
+    border: none;
+}
+
+.main-form button:active,
+.main-form button:hover,
+.main-form button:focus {
+    background-color: #b5739d;
+    color: black;
+}
+
+.main-form-input {
+    margin-bottom: 1rem;
+}
+
+
+.login-links {
+    width: 400px;
+    padding: 1rem;
+}
+
+.login-links a {
+    text-decoration: none;
+    color: #b5739d;
 }
