@@ -40,7 +40,196 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
             </td>
+            @if (User.Identity.IsAuthenticated)
+            {
+                    <td>
+                        <input type="button" value="Add To Cart" id="@item.Id-add" data-ticketType="@item.TicketType.Type" data-ticketPrice="@item.TicketType.Price" onclick=updateShoppingCart(event)>
+                        <input type="button" value="Remove To Cart" id="@item.Id-remove" data-ticketType="@item.TicketType.Type" data-ticketPrice="@item.TicketType.Price" onclick=updateShoppingCart(event)>
+                        <span>Quantity:</span>
+                        <span id="@item.Id-quantity" class="quantity">0</span>
+                        <span>Amount: </span>
+                        <span id="@item.Id-amount" class="amount">0</span>
+                    </td>
+            }
         </tr>
 }
     </tbody>
 </table>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div>
+        <p id="totalItems">0</p>
+    </div>
+    <div>
+        <h3>Total:</h3>
+        $<span id="totalAmount" class="totalAmount">0</span>
+    </div>
+    <br />
+
+    <div id="paypal-button"></div>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <button>
+        <a class="nav-link text-dark" href="/Identity/Account/Login">Login</a>
+    </button>
+}
+
+
+
+<script>
+    const ticketRequests = [];
+
+    function updateShoppingCart(event) {
+        var clickedId = event.target.id; 
+        var elementIdSplit = clickedId.split('-');
+        var id = elementIdSplit[0]; // id of the TicketOptionVM item
+        var action = elementIdSplit[1]; // add or remove
+        var ticketType = event.target.ticketType;
+        var ticketPrice = event.target.ticketPrice;
+
+        ChangeCart(id, action, ticketType, ticketPrice)
+    }
+
+    function ChangeCart(id, action, ticketPrice, ticketType) {
+        var itemPriceId = ticketPrice;
+        var cartQtyId = "#" + id + "-quantity";
+        var cartAmtId = "#" + id + "-amount";
+
+        var quantity = $(cartQtyId).html();
+
+        if (action == "add") {
+            quantity++;
+        } else {
+            quantity--;
+            if (quantity < 0) {
+                quantity = 0;
+            }
+        }
+
+        const ticketRequestByCurrentType = ticketRequests.filter(request => request.ticketType === ticketType);
+
+        if(ticketRequestByCurrentType.length === 0) {
+            ticketRequests.push({
+                ticketType,
+                quantity
+            })
+        } else {
+            ticketRequestByCurrentType.quantity = quantity;
+        }
+
+        $(cartQtyId).text(quantity);
+
+        //Calculate new amount
+        var amount = $(itemPriceId).html();
+
+        var newAmount = (amount * quantity).toFixed(2);
+
+        $(cartAmtId).text(newAmount);
+
+        var totalItemsId = "#totalItems";
+        var totalAmountId = "#totalAmount";
+
+        //Calculate totals
+        var totalQuantity = 0;
+        $('.quantity').each(function () {
+            var thisQuantity = $(this).html();
+            totalQuantity += parseInt(thisQuantity);
+        });
+        var totalAmount = 0.00;
+        $('.amount').each(function () {
+            var thisAmount = $(this).html();
+            totalAmount += parseFloat(thisAmount);
+        });
+
+        $("#totalItems").text(totalQuantity);
+        $("#totalAmount").text(totalAmount.toFixed(2));
+    }
+
+    paypal.Button.render({
+        env: 'sandbox',
+        style: {
+            size: 'small',
+            color: 'gold',
+            shape: 'pill',
+            label: 'checkout'
+        },
+        client: {
+            // You need to change this to your client ID
+            sandbox: 'AY6FwsqKZKOJ2wSYZM6Idv2oinvnUMKMepprrSKvg_JpwRo_r2PkuTp0O5yBpNM2uZqWc6UUnHXUho3W',
+            // production: '3W8F5EEJKUJP4KSY'  // Switch to ‘production’ when live.
+        },
+
+        commit: true,
+
+        payment: function (data, actions) {
+            return actions.payment.create({
+                payment: {
+                    transactions: [{
+
+                        custom: 'Custom data goes here!',
+                        amount: {
+                            total:
+                                document.getElementById("itemPrice").innerHTML
+                            , currency:
+                                document.getElementById("currency").innerHTML
+                        }
+                    }]
+                }
+            });
+        },
+
+        onAuthorize: function (data, actions) {
+            return actions.payment.execute().then(function (payment) {
+                console.log("This is what comes back from Paypal: ")
+                console.log(payment);
+                alert("This JSON is from Paypal: " + JSON.stringify(payment));
+                console.log("-------------------------------------")
+                var dataObject = {
+                    //"cart": payment.cart,
+                    //"intent": payment.intent,
+                    //"paymentID": payment.id,
+                    //"create_time": payment.create_time,
+                    //"paymentState": payment.state,
+                    "payerEmail": payment.payer.payer_info.email,
+                    //"payerID": payment.payer.payer_info.payer_id,
+                    //"payerFirstName": payment.payer.payer_info.first_name,
+                    //"payerLastName": payment.payer.payer_info.last_name,
+                    //"payerMiddleName": payment.payer.payer_info.middle_name,
+                    //"payerCountryCode": payment.payer.payer_info.country_code,
+                    //"paymentMethod": payment.payer.payment_method,
+                    //"payerStatus": payment.payer.status,
+                    //"amount": payment.transactions[0].amount.total,
+                    //"currency": payment.transactions[0].amount.currency,
+                    //"custom": payment.transactions[0].custom,
+                    "ticketRequests": ticketRequests,
+                }
+
+
+                $.ajax({
+                    type: "post",
+                    url: "/Home/PaySuccess",
+                    data: JSON.stringify(dataObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (msg) {
+                        console.log("Data: " + JSON.stringify(data));
+                        window.location.href
+                            = "/Home/Confirmation?confirmationId=" + data.paymentID;
+                    },
+
+                    error: function (msg) {
+                        alert("fail: " + JSON.stringify(msg));
+                    }
+                });
+            })
+        },
+
+        onCancel: function (data, actions) {
+        },
+    }, '#paypal-button');
+</script>
