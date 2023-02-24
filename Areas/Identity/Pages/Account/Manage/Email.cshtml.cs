@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using TeamRedInternalProject.Models;
+using TeamRedInternalProject.Repositories;
 
 namespace TeamRedInternalProject.Areas.Identity.Pages.Account.Manage
 {
@@ -20,15 +22,20 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly ConcertContext _concertContext;
+        private readonly UserRepo _userRepo;
 
         public EmailModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ConcertContext concertContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _concertContext = concertContext;
+            _userRepo = new UserRepo();
         }
 
         /// <summary>
@@ -67,20 +74,30 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+
             [EmailAddress]
             [Display(Name = "New email")]
             public string NewEmail { get; set; }
+
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
+            User gettingUser = _userRepo.GetUsersByEmail(email);
+            var userEdit = _userRepo.EditUser(gettingUser);
             Email = email;
 
             Input = new InputModel
             {
                 NewEmail = email,
+                FirstName = userEdit.FirstName, 
+                LastName = userEdit.LastName
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
