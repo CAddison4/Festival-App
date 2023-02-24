@@ -1,10 +1,13 @@
-﻿using TeamRedInternalProject.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using TeamRedInternalProject.Models;
 
 namespace TeamRedInternalProject.ViewModel
 {
     public class PurchaseDetailsVM
     {
-        public User User { get; set; }
-        public List<Ticket> Tickets { get; set; }
+        [Key]
+        public string PayerEmail { get; set; }
+
+        public IEnumerable<TicketRequestVM> TicketRequests { get; set; }
     }
 }
