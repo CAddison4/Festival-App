@@ -43,6 +43,16 @@ namespace TeamRedInternalProject.Controllers
         {
             ViewBag.SelectedUser = email;
 
+            RoleRepo roleRepo = new RoleRepo();
+            var roles = roleRepo.GetAllRoles().ToList();
+
+            var preRoleList = roles.Select(r => 
+                new SelectListItem {  Value = r.RoleName, Text = r.RoleName }).ToList();
+
+            var roleList = new SelectList(preRoleList, "Value", "Text");
+
+            ViewBag.RoleSelectList = roleList;
+
             List<User>userList = _userRepo.GetUsers();
 
             var preUserList = userList.Select( u=> new SelectListItem
