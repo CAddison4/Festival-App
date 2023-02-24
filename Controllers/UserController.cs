@@ -63,23 +63,24 @@ namespace TeamRedInternalProject.Controllers
 
         }
 
-        ////HTTP Post Create
-        //[HttpPost]
-        //public IActionResult PurchaseTickets(PurchaseDetailsVM purchaseDetails)
-        //{
-        //    string email = User.Identity.Name;
-        //    User user = _userRepo.GetUsersByEmail(email);
-
-
-        //}
-
-        //Ticket Confirm Details
-        public IActionResult Details()
+        //HTTP Post Create
+        [HttpPost]
+        public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
         {
-            return View();
+            string email = User.Identity.Name;
+            User user = _userRepo.GetUsersByEmail(email);
+
+            Console.WriteLine(purchaseDetails);
+
         }
 
-        //Post Details, Payment 
+        ////Ticket Confirm Details
+        //public IActionResult Details()
+        //{
+        //    return View();
+        //}
+
+        ////Post Details, Payment 
 
 
 
