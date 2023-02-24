@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
+using TeamRedInternalProject.ViewModel;
 
 namespace TeamRedInternalProject.Controllers
 {
@@ -12,14 +13,14 @@ namespace TeamRedInternalProject.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly UserRepo _userRepo;
         private readonly UserRoleRepo _userRoleRepo;
-        private IServiceProvider _serviveProvider;
+        private IServiceProvider _serviceProvider;
         private readonly ConcertContext _db;
         public RoleController(ILogger<UserController> logger, ConcertContext db, IServiceProvider serviceProvider)
         {
             _logger = logger;
-            _serviveProvider= serviceProvider;
+            _serviceProvider= serviceProvider;
             _userRepo = new UserRepo();
-            _userRoleRepo = new UserRoleRepo(_serviveProvider, _db);
+            _userRoleRepo = new UserRoleRepo(serviceProvider, db);
             _db = db;
         }
         // GET: RoleController
@@ -39,13 +40,18 @@ namespace TeamRedInternalProject.Controllers
         // It gives two drop downs - the first contains the user names with
         // the requested user selected. The second drop down contains all
         // possible roles.
-        public ActionResult Create(string email)
+        public async Task<ActionResult> Create(string email)
         {
             ViewBag.SelectedUser = email;
 
-            RoleRepo roleRepo = new RoleRepo();
+            RoleRepo roleRepo = new RoleRepo(_serviceProvider);
             var roles = roleRepo.GetAllRoles().ToList();
-
+            if (roles == null || roles.Count == 0)
+            {
+                await roleRepo.CreateInitialRoles();
+                roles = roleRepo.GetAllRoles().ToList();
+            }
+            
             var preRoleList = roles.Select(r => 
                 new SelectListItem {  Value = r.RoleName, Text = r.RoleName }).ToList();
 
@@ -69,20 +75,19 @@ namespace TeamRedInternalProject.Controllers
 
         // Assigns role to user.
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create(UserRoleVM userRole)
         {
             string message = string.Empty;
 
             if (ModelState.IsValid)
             {
-             await _userRoleRepo.AddUserRole(user.Email,
-                                                            user.Admin);
-             _userRoleRepo.UpdateUser(user.Email);
+             await _userRoleRepo.AddUserRole(userRole.Email, userRole.Role);
+             _userRoleRepo.UpdateUser(userRole.Email);
 
                }
             try
             {
-                return RedirectToAction("Index", "Role", new { email = user.Email });
+                return RedirectToAction("Index", "Role", new { email = userRole.Email });
             }
             catch
             {

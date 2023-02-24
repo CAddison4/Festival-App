@@ -59,7 +59,5 @@ namespace TeamRedInternalProject.Repositories
             return true;
         }
 
-
-
     }
 }

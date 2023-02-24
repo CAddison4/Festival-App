@@ -1,6 +1,7 @@
 ﻿using TeamRedInternalProject.Models;
 using TeamRedInternalProject.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TeamRedInternalProject.Repositories
 {
@@ -8,15 +9,18 @@ namespace TeamRedInternalProject.Repositories
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ConcertContext _db;
+        private RoleManager<IdentityRole> _roleManager;
         public RoleRepo(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _db = new();
+            _roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
         }
-        
         public List<RoleVM> GetAllRoles()
         {
-            var roles = _db.Roles;
+
+            var roles = _roleManager.Roles;
             List<RoleVM> roleList = new List<RoleVM>();
 
             foreach (var role in roles)
@@ -30,22 +34,22 @@ namespace TeamRedInternalProject.Repositories
             return roleList;
         }
 
-        public bool CreateRole(string roleName)
+        public async Task<bool> CreateRole(string roleName)
         {
-            _db.Roles.Add(new IdentityRole
-            { 
+            await _roleManager.CreateAsync(new IdentityRole
+            {
                 Name = roleName,
-                Id= roleName, 
+                Id = roleName,
                 NormalizedName = roleName.ToUpper()
             });
             _db.SaveChanges();
             return true;
         }
 
-        public bool CreateInitialRoles()
+        public async Task<bool> CreateInitialRoles()
         {
             string roleName = "Admin";
-            var created = CreateRole(roleName);
+            var created = await this.CreateRole(roleName);
 
             if (!created)
             {
