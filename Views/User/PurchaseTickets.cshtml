@@ -43,8 +43,8 @@
             @if (User.Identity.IsAuthenticated)
             {
                     <td>
-                        <input type="button" value="Add To Cart" id="@item.Id-add" data-ticketType="@item.TicketType.Type" data-ticketPrice="@item.TicketType.Price" onclick=updateShoppingCart(event)>
-                        <input type="button" value="Remove To Cart" id="@item.Id-remove" data-ticketType="@item.TicketType.Type" data-ticketPrice="@item.TicketType.Price" onclick=updateShoppingCart(event)>
+                        <input type="button" value="Add To Cart" id="@item.Id-add" data-type="@item.TicketType.Type" data-price="@item.TicketType.Price" onclick=updateShoppingCart(event)>
+                        <input type="button" value="Remove To Cart" id="@item.Id-remove" data-type="@item.TicketType.Type" data-price="@item.TicketType.Price" onclick=updateShoppingCart(event)>
                         <span>Quantity:</span>
                         <span id="@item.Id-quantity" class="quantity">0</span>
                         <span>Amount: </span>
@@ -88,14 +88,12 @@
         var elementIdSplit = clickedId.split('-');
         var id = elementIdSplit[0]; // id of the TicketOptionVM item
         var action = elementIdSplit[1]; // add or remove
-        var ticketType = event.target.ticketType;
-        var ticketPrice = event.target.ticketPrice;
-
-        ChangeCart(id, action, ticketType, ticketPrice)
+        var ticketType = event.target.dataset.type;
+        var ticketPrice = event.target.dataset.price;
+        ChangeCart(id, action, ticketPrice, ticketType)
     }
 
     function ChangeCart(id, action, ticketPrice, ticketType) {
-        var itemPriceId = ticketPrice;
         var cartQtyId = "#" + id + "-quantity";
         var cartAmtId = "#" + id + "-amount";
 
@@ -121,12 +119,14 @@
             ticketRequestByCurrentType.quantity = quantity;
         }
 
+        console.log(ticketRequests);
+
         $(cartQtyId).text(quantity);
 
         //Calculate new amount
-        var amount = $(itemPriceId).html();
-
-        var newAmount = (amount * quantity).toFixed(2);
+        const quantityNum = quantity * 1;
+        const ticketPriceNum = ticketPrice * 1;
+        var newAmount = (ticketPriceNum * quantityNum).toFixed(2);
 
         $(cartAmtId).text(newAmount);
 
@@ -173,9 +173,9 @@
                         custom: 'Custom data goes here!',
                         amount: {
                             total:
-                                document.getElementById("itemPrice").innerHTML
+                                document.getElementById("totalAmount").innerHTML
                             , currency:
-                                document.getElementById("currency").innerHTML
+                                'CAD'
                         }
                     }]
                 }
@@ -211,7 +211,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/Home/PaySuccess",
+                    url: "/User/PaySuccess",
                     data: JSON.stringify(dataObject),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
