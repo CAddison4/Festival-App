@@ -1,0 +1,43 @@
+﻿@page
+@model ChangeNameModel
+@{
+    ViewData["Title"] = "Set Name";
+    ViewData["ActivePage"] = ManageNavPages.Name;
+}
+
+<h3>Edit Your Name</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="set-password-form" method="post" class="main-form mx-auto">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-floating">
+                <input asp-for="Email" class="form-control" disabled />
+                <label asp-for="Email" class="form-label"></label>
+            </div>
+            <br/>
+
+            <div class="form-floating">
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="new-password" />
+                <label asp-for="Input.FirstName" class="form-label"></label>
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <br />
+
+            <div class="form-floating">
+                <input asp-for="Input.LastName" class="form-control" autocomplete="new-password" />
+                <label asp-for="Input.LastName" class="form-label"></label>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <br />
+
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Change Name</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
