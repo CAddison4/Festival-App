@@ -19,7 +19,6 @@
                 @*@Html.DisplayNameFor(model => model.QtyRemaining)*@
                 Status
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,13 +31,7 @@
                 @Html.DisplayFor(modelItem => item.TicketType.Price)
             </td>
             <td>
-                @(item.QtyRemaining != 0 ? "Available" : "SOLD OUT!");
-            </td>
-            <td>
-                <a href="#0">Add to Cart</a>
-@*                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                @(item.QtyRemaining != 0 ? "Available" : "SOLD OUT!")
             </td>
             @if (User.Identity.IsAuthenticated)
             {
@@ -108,18 +101,16 @@
             }
         }
 
-        const ticketRequestByCurrentType = ticketRequests.filter(request => request.ticketType === ticketType);
+        const ticketRequestIndexOfCurrentType = ticketRequests.findIndex(request => request.ticketType === ticketType);
 
-        if(ticketRequestByCurrentType.length === 0) {
+        if(ticketRequestIndexOfCurrentType === -1) {
             ticketRequests.push({
                 ticketType,
                 quantity
             })
         } else {
-            ticketRequestByCurrentType.quantity = quantity;
+            ticketRequests[ticketRequestIndexOfCurrentType].quantity = quantity;
         }
-
-        console.log(ticketRequests);
 
         $(cartQtyId).text(quantity);
 
