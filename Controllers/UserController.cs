@@ -65,7 +65,8 @@ namespace TeamRedInternalProject.Controllers
 
         //HTTP Post Create
         [HttpPost]
-        public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
+        //public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
+        public void PaySuccess([FromBody] string purchaseDetails)
         {
             string email = User.Identity.Name;
             User user = _userRepo.GetUsersByEmail(email);

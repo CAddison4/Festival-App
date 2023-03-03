@@ -177,15 +177,38 @@
             return actions.payment.execute().then(function (payment) {
                 console.log("This is what comes back from Paypal: ")
                 console.log(payment);
-                alert("This JSON is from Paypal: " + JSON.stringify(payment));
-                console.log("-------------------------------------")
+                //alert("This JSON is from Paypal: " + JSON.stringify(payment));
+                console.log("-------------------------------------");
+                var ticketRequest1 = {
+                    "purchaseDetails": {
+                        "PayerEmail":"payment.payer.payer_info.email",
+                        "TicketRequests": "ticketRequests" }
+                };
+
+                var ticketRequest2 = {
+                    "purchaseDetails": {
+                        "PayerEmail":"payment.payer.payer_info.email",
+                        "TicketRequests": ticketRequests }
+                };
+                //console.log(JSON.stringify(ticketRequest));
+                console.log("-------------^^^^^^^------------------");
+
+                console.log("ticketRequest1: " + JSON.stringify(ticketRequest1));
+                console.log("ticketRequest2: " + JSON.stringify(ticketRequest2));
+                console.log("dataObject: " + JSON.stringify(dataObject));
+
+
                 var dataObject = {
                     //"cart": payment.cart,
                     //"intent": payment.intent,
                     //"paymentID": payment.id,
                     //"create_time": payment.create_time,
                     //"paymentState": payment.state,
-                    "payerEmail": payment.payer.payer_info.email,
+                    //"PayerEmail": payment.payer.payer_info.email,
+                    "purchaseDetails": {
+                        "PayerEmail":payment.payer.payer_info.email,
+                        "TicketRequests": ticketRequest1
+                    },
                     //"payerID": payment.payer.payer_info.payer_id,
                     //"payerFirstName": payment.payer.payer_info.first_name,
                     //"payerLastName": payment.payer.payer_info.last_name,
@@ -196,25 +219,28 @@
                     //"amount": payment.transactions[0].amount.total,
                     //"currency": payment.transactions[0].amount.currency,
                     //"custom": payment.transactions[0].custom,
-                    "ticketRequests": ticketRequests,
+                    //"TicketRequests": "ticketRequests",
                 }
 
-
+                console.log(dataObject)
                 $.ajax({
                     type: "post",
                     url: "/User/PaySuccess",
-                    data: JSON.stringify(dataObject),
+                    data: "dataObject",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
 
                     success: function (msg) {
-                        console.log("Data: " + JSON.stringify(data));
+                        console.log("<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>");
+                        console.log("ticketRequests: " + JSON.stringify(ticketRequests));
+                        console.log("dataObject: " + JSON.stringify(dataObject));
                         window.location.href
                             = "/Home/Confirmation?confirmationId=" + data.paymentID;
                     },
 
                     error: function (msg) {
-                        alert("fail: " + JSON.stringify(msg));
+                        console.log("fail: " + JSON.stringify(msg));
+                        //alert("fail: " + JSON.stringify(msg));
                     }
                 });
             })
