@@ -126,14 +126,6 @@ namespace TeamRedInternalProject.Controllers
             List<string> ticketTypes = new List<string>();
             string ticketTypeName = "";
 
-            //Console.WriteLine(string.Join(", ", keySet));
-            //Console.ReadLine();
-
-            //Get Ticket Types Names
-            //Display only 1 of each Ticket Name
-            //Get Quantities
-            //Get Order Date
-
             string orderDate = order.OrderDate.ToString("MMM dd, yyyy");
 
             foreach(Ticket ticket in tickets)
@@ -162,11 +154,8 @@ namespace TeamRedInternalProject.Controllers
                         }
                         
                         ticketTypeDict[ticketTypeName] = i;
-                    }
-                    
+                    } 
                 }
-
-
             }
 
             foreach (var entry in ticketTypeDict)
