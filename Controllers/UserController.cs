@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.MSIdentity.Shared;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
@@ -65,15 +69,127 @@ namespace TeamRedInternalProject.Controllers
 
         //HTTP Post Create
         [HttpPost]
-        //public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
-        public void PaySuccess([FromBody] string purchaseDetails)
+
+        public string PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
         {
-            string email = User.Identity.Name;
-            User user = _userRepo.GetUsersByEmail(email);
+            // CA MAR 3/23: this is no longer PayerEmail. Email returned from PayPal was null. Now assigning to User Email.
+            //Order Email
+            purchaseDetails.PayerEmail = User.Identity.Name;
+            User user = _userRepo.GetUsersByEmail(purchaseDetails.PayerEmail);
 
-            Console.WriteLine(purchaseDetails);
+            Festival currentFestival = _db.Festivals.Where(a => a.IsCurrent == true).FirstOrDefault();
+            int currentFestivalId = currentFestival.FestivalId;
+            
+            DateTime orderDate = DateTime.Now;
+            Order order = new Order()
+            {
+                OrderDate = orderDate,
+                Email = purchaseDetails.PayerEmail
+            };
 
+            _db.Orders.Add(order);
+            _db.SaveChanges();
+
+            foreach (TicketRequestVM ticketRequest in purchaseDetails.TicketRequests)
+            {
+                for (int i = 0; i < ticketRequest.quantity;)
+                {
+                    
+                    TicketType ticketType = _db.TicketTypes.Where(tt => tt.Type == ticketRequest.ticketType).FirstOrDefault();
+                    int ticketTypeId = ticketType.TicketTypeId;
+                    
+
+                    Ticket ticket = new Ticket()
+                    {
+                        OrderId = order.OrderId,
+                        FestivalId = currentFestivalId,
+                        TicketTypeId = ticketTypeId,
+                    };
+
+                    _db.Tickets.Add(ticket);
+                    _db.SaveChanges();
+
+                    i++;
+                }
+            }
+
+            return JsonConvert.SerializeObject(order.OrderId);
         }
+
+        public IActionResult PurchaseConfirmation(int id)
+        {
+            Order order = _db.Orders.Where(o => o.OrderId == id).FirstOrDefault();
+            List<Ticket> tickets  = _db.Tickets.Where(t => t.OrderId == id).ToList();
+            Dictionary<string, int> ticketTypeDict = new Dictionary<string, int>();
+
+            HashSet<string> ticketTypeSet = new HashSet<string>();
+            List<string> ticketTypes = new List<string>();
+            string ticketTypeName = "";
+
+            //Console.WriteLine(string.Join(", ", keySet));
+            //Console.ReadLine();
+
+            //Get Ticket Types Names
+            //Display only 1 of each Ticket Name
+            //Get Quantities
+            //Get Order Date
+
+            string orderDate = order.OrderDate.ToString("MMM dd, yyyy");
+
+            foreach(Ticket ticket in tickets)
+            {
+                TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticket.TicketTypeId).FirstOrDefault();
+                ticketTypeName = ticketType.Type;
+                ticketTypes.Add(ticketTypeName);
+            }
+
+            ticketTypeSet.Add(ticketTypeName);
+            foreach (string type in ticketTypes)
+            {
+                try
+                {
+                    ticketTypeDict.Add(ticketTypeName, 1);
+                }
+                catch
+                {
+                    //update count in dict:
+                    if(ticketTypeName == type)
+                    {
+                        int i = 0;
+                        foreach (string ttn in ticketTypes)
+                        {
+                            i++;
+                        }
+                        
+                        ticketTypeDict[ticketTypeName] = i;
+                    }
+                    
+                }
+
+
+            }
+
+            foreach (var entry in ticketTypeDict)
+            {
+                Console.WriteLine($"{entry.Key} : {entry.Value}");
+            }
+
+            return View(id);
+        }
+
+        //public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
+        //public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
+        ////public JsonResponse PaySuccess([FromBody] string purchaseDetails)
+        //{
+        //    string email = User.Identity.Name;
+        //    User user = _userRepo.GetUsersByEmail(email);
+
+        //    Console.WriteLine("purchasedetails", purchaseDetails);
+        //    string updatedPurchaseDetails = purchaseDetails.ToString();
+        //    Console.WriteLine("udpated purchase details", updatedPurchaseDetails);
+
+
+        //}
 
         ////Ticket Confirm Details
         //public IActionResult Details()

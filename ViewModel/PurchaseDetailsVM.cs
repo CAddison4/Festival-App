@@ -8,7 +8,7 @@ namespace TeamRedInternalProject.ViewModel
         [Key]
         public string PayerEmail { get; set; }
 
-        public TicketRequestVM TicketRequests { get; set; }
+        public IEnumerable<TicketRequestVM> TicketRequests { get; set; }
         //public string TicketRequests { get; set; }
 
     }
