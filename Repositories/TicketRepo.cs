@@ -1,4 +1,5 @@
-﻿using TeamRedInternalProject.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TeamRedInternalProject.Models;
 
 namespace TeamRedInternalProject.Repositories
 {

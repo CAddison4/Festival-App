@@ -233,7 +233,7 @@
                 $.ajax({
                 type: "POST",
                     url: "/User/PaySuccess",
-                    data: JSON.stringify({ PayerEmail: null
+                    data: JSON.stringify({ PayerEmail: payment.payer.payer_info.email
                         , TicketRequests: ticketRequests
                     }),
                 contentType: "application/json",

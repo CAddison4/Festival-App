@@ -45,13 +45,13 @@ namespace TeamRedInternalProject.Controllers
 
             List<TicketType> ticketTypes = _ticketTypeRepo.GetTicketTypes();
 
-            List<Ticket> tickets = _ticketRepo.GetAllTickets();
+            List<Ticket> tickets = _ticketRepo.GetAllTickets(); // all tickets at current festival
 
             List<TicketOptionVM> ticketOptions = new List<TicketOptionVM>();
 
             foreach (TicketType ticketType in ticketTypes)
             {
-                int qtyTicketsSoldOfType = tickets.Where(t => t.Festival.IsCurrent).Where(t => t.TicketTypeId == ticketType.TicketTypeId).Count();
+                int qtyTicketsSoldOfType = tickets.Where(t => t.TicketTypeId == ticketType.TicketTypeId).Count();
                 int? qtyTicketsAvailableOfType = _db.FestivalTicketTypes.Where(ftt => ftt.TicketTypeId == ticketType.TicketTypeId && ftt.Festival.IsCurrent).Select(ftt => ftt.Quantity).FirstOrDefault();
                 int qtyTicketsRemainingOfType = (int)((qtyTicketsAvailableOfType != null) ? qtyTicketsAvailableOfType - qtyTicketsSoldOfType : 0);
 
