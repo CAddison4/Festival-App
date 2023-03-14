@@ -13,9 +13,9 @@ public partial class Ticket
 
     public int TicketTypeId { get; set; }
 
-    public virtual Festival Festival { get; set; } = null!;
+    public virtual Festival Festival { get; set; }
 
-    public virtual Order Order { get; set; } = null!;
+    public virtual Order Order { get; set; }
 
-    public virtual TicketType TicketType { get; set; } = null!;
+    public virtual TicketType TicketType { get; set; }
 }

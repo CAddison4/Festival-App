@@ -9,7 +9,7 @@ public partial class Festival
 
     public DateTime Date { get; set; }
 
-    public string Location { get; set; } = null!;
+    public string Location { get; set; }
 
     public bool IsCurrent { get; set; }
 
