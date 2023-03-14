@@ -91,8 +91,6 @@ namespace TeamRedInternalProject.Controllers
                 Email = userEmail,
                 PayerEmail = purchaseDetails.PayerEmail
             };
-
-            // save order to db
             _db.Orders.Add(order);
             _db.SaveChanges();
 
@@ -115,7 +113,7 @@ namespace TeamRedInternalProject.Controllers
                         FestivalId = currentFestivalId,
                         TicketTypeId = ticketTypeId,
                     };
-
+                    //Add to repo
                     _db.Tickets.Add(ticket);
                     _db.SaveChanges();
 
@@ -127,17 +125,19 @@ namespace TeamRedInternalProject.Controllers
 
         public IActionResult PurchaseConfirmation(int id)
         {
+            //Add to repo
             Order order = _db.Orders.Where(o => o.OrderId == id).FirstOrDefault();
+            //Add to repo
             List<Ticket> tickets  = _db.Tickets.Where(t => t.OrderId == id).ToList();
             Dictionary<string, int> ticketTypeDict = new Dictionary<string, int>();
-
             HashSet<string> ticketTypeSet = new HashSet<string>();
             List<string> ticketTypes = new List<string>();
+            User user = _userRepo.GetUsersByEmail(User.Identity.Name);
             string ticketTypeName = "";
+            DateTime orderDate = order.OrderDate;
 
-            string orderDate = order.OrderDate.ToString("MMM dd, yyyy");
 
-            foreach(Ticket ticket in tickets)
+            foreach (Ticket ticket in tickets)
             {
                 TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticket.TicketTypeId).FirstOrDefault();
                 ticketTypeName = ticketType.Type;
@@ -166,13 +166,26 @@ namespace TeamRedInternalProject.Controllers
                     } 
                 }
             }
-
-            foreach (var entry in ticketTypeDict)
+            OrderConfirmationVM orderConfirmationVM = new OrderConfirmationVM()
             {
-                Console.WriteLine($"{entry.Key} : {entry.Value}");
-            }
+                OrderId = id,
+                FirstName = user.FirstName, 
+                LastName = user.LastName,
+                OrderDate = orderDate,
+                OrderEmail = user.Email,
+                // Change the payer email once Adam makes update:
+                PayerEmail = user.Email,
+                TicketTypes = ticketTypeDict
+            };
+            //orderConfirmationVM.TicketTypes = ticketTypeDict;
 
-            return View(id);
+            //foreach (var entry in ticketTypeDict)
+            //{
+                
+            //    Console.WriteLine($"{entry.Key} : {entry.Value}");
+            //}
+
+            return View(orderConfirmationVM);
         }
 
         //public void PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
