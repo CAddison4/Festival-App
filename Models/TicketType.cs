@@ -9,7 +9,7 @@ public partial class TicketType
     public int TicketTypeId { get; set; }
 
     [Display(Name = "Ticket Type")]
-    public string Type { get; set; } = null!;
+    public string Type { get; set; }
 
     public decimal Price { get; set; }
 

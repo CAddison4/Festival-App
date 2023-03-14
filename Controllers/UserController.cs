@@ -30,8 +30,7 @@ namespace TeamRedInternalProject.Controllers
         public IActionResult Index()
         {
             string email = User.Identity.Name;
-            User user = _userRepo.GetUsersByEmail(email);
-            List<Ticket> ticketList = _ticketRepo.GetUserTickets(email);
+            List<TicketVM> ticketList = _ticketRepo.GetUserTicketVMs(email);
 
 
             return View(ticketList);
