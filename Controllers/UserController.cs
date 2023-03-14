@@ -72,32 +72,40 @@ namespace TeamRedInternalProject.Controllers
 
         public string PaySuccess([FromBody] PurchaseDetailsVM purchaseDetails)
         {
-            // CA MAR 3/23: this is no longer PayerEmail. Email returned from PayPal was null. Now assigning to User Email.
-            //Order Email
-            purchaseDetails.PayerEmail = User.Identity.Name;
-            User user = _userRepo.GetUsersByEmail(purchaseDetails.PayerEmail);
-
-            Festival currentFestival = _db.Festivals.Where(a => a.IsCurrent == true).FirstOrDefault();
-            int currentFestivalId = currentFestival.FestivalId;
+            // get email of user in current session
+            string userEmail = User!.Identity!.Name!;
             
+            // get user object from custom user table by userEmail
+            User user = _userRepo.GetUsersByEmail(userEmail);
+
+            // get current id of current festival
+            int currentFestivalId = _db.Festivals.Where(a => a.IsCurrent).First().FestivalId;
+            
+            // get current date
             DateTime orderDate = DateTime.Now;
+            
+            // build order object
             Order order = new Order()
             {
                 OrderDate = orderDate,
-                Email = purchaseDetails.PayerEmail
+                Email = userEmail,
+                PayerEmail = purchaseDetails.PayerEmail
             };
-            //Add to repo
             _db.Orders.Add(order);
             _db.SaveChanges();
 
+            // make a ticket for the quantity of each ticket type in the order
             foreach (TicketRequestVM ticketRequest in purchaseDetails.TicketRequests)
             {
-                for (int i = 0; i < ticketRequest.quantity;)
+                for (int i = 0; i < ticketRequest.quantity; i++)
                 {
                     
-                    TicketType ticketType = _db.TicketTypes.Where(tt => tt.Type == ticketRequest.ticketType).FirstOrDefault();
+                    TicketType? ticketType = _db.TicketTypes.Where(tt => tt.Type == ticketRequest.ticketType).FirstOrDefault();
+                    if (ticketType == null)
+                    {
+                        return "Requested ticket type does not exist";
+                    }
                     int ticketTypeId = ticketType.TicketTypeId;
-                    
 
                     Ticket ticket = new Ticket()
                     {
@@ -109,7 +117,6 @@ namespace TeamRedInternalProject.Controllers
                     _db.Tickets.Add(ticket);
                     _db.SaveChanges();
 
-                    i++;
                 }
             }
 
