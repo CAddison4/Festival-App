@@ -32,15 +32,6 @@ namespace TeamRedInternalProject.Controllers
             string email = User.Identity.Name;
             List<TicketVM> ticketList = _ticketRepo.GetUserTicketVMs(email);
 
-            try
-            {
-                HttpContext.Session.SetString("fName", user.FirstName);
-            }
-            catch
-            {
-                HttpContext.Session.SetString("fName", "");
-            }
-
 
             return View(ticketList);
         }
