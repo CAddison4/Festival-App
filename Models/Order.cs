@@ -9,9 +9,11 @@ public partial class Order
 
     public DateTime OrderDate { get; set; }
 
-    public string Email { get; set; } = null!;
+    public string PayerEmail { get; set; }
 
-    public virtual User EmailNavigation { get; set; } = null!;
+    public string Email { get; set; }
+
+    public virtual User EmailNavigation { get; set; }
 
     public virtual ICollection<Ticket> Tickets { get; } = new List<Ticket>();
 }

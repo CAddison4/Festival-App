@@ -27,8 +27,9 @@ CREATE TABLE [User] (
 
 CREATE TABLE [Order] (
 	orderID			INT IDENTITY	PRIMARY KEY,
-	orderDate		DATE			NOT NULL,
+	orderDate		DATE			NOT NULL	DEFAULT  CAST( GETDATE() AS DATE ),
 	email			VARCHAR(255)	NOT NULL,
+	payerEmail		VARCHAR(255)	NOT NULL,
 	FOREIGN KEY (email)				REFERENCES [User](email)
 );
 
