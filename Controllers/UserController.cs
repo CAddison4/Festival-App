@@ -29,6 +29,15 @@ namespace TeamRedInternalProject.Controllers
             User user = _userRepo.GetUsersByEmail(email);
             List<Ticket> ticketList = _ticketRepo.GetUserTickets(email);
 
+            try
+            {
+                HttpContext.Session.SetString("fName", user.FirstName);
+            }
+            catch
+            {
+                HttpContext.Session.SetString("fName", "");
+            }
+
 
             return View(ticketList);
         }
