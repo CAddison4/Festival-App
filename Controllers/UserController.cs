@@ -100,7 +100,7 @@ namespace TeamRedInternalProject.Controllers
             Order order = _orderRepo.GetOrderById(id);
             List<Ticket> tickets  = _ticketRepo.GetTicketsByOrder(id);
             User user = _userRepo.GetUsersByEmail(User.Identity.Name);
-            OrderConfirmationVM orderConfirmationVM = _orderRepo.CreateOrderConfirmation(order, user, tickets);
+            PurchaseConfirmationVM orderConfirmationVM = _orderRepo.CreateOrderConfirmation(order, user, tickets);
 
             return View(orderConfirmationVM);
         }

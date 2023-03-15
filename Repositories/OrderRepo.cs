@@ -79,7 +79,7 @@ namespace TeamRedInternalProject.Repositories
         /// <param name="user"></param>
         /// <param name="tickets"></param>
         /// <returns>Order Confirmation View Model Object</returns>
-        public OrderConfirmationVM CreateOrderConfirmation(Order order, User user, List<Ticket> tickets)
+        public PurchaseConfirmationVM CreateOrderConfirmation(Order order, User user, List<Ticket> tickets)
         {
             Dictionary<string, int> ticketTypeDict = new Dictionary<string, int>();
             List<string> ticketTypes = new List<string>();
@@ -115,7 +115,7 @@ namespace TeamRedInternalProject.Repositories
                     }
                 }
             }
-            OrderConfirmationVM orderConfirmationVM = new OrderConfirmationVM()
+            PurchaseConfirmationVM purchaseConfirmationVM = new PurchaseConfirmationVM()
             {
                 OrderId = order.OrderId,
                 FirstName = user.FirstName,
@@ -126,7 +126,7 @@ namespace TeamRedInternalProject.Repositories
                 TicketTypes = ticketTypeDict
             };
 
-            return orderConfirmationVM;
+            return purchaseConfirmationVM;
         }
     }
 }

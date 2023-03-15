@@ -5,7 +5,7 @@ using TeamRedInternalProject.Models;
 namespace TeamRedInternalProject.ViewModel
 {
     
-    public class OrderConfirmationVM
+    public class PurchaseConfirmationVM
     {
         public int OrderId { get; set; }
         public string FirstName { get; set; }
