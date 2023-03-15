@@ -19,7 +19,7 @@ namespace TeamRedInternalProject.Data.Services
         {
             var apiKey = _configuration.GetSection("SendGrid")["ApiKey"];
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("craig_watson@bcit.ca", "Craig Watson");
+            var from = new EmailAddress("mikes.yamauchi@gmail.com", "Mike Yamauchi");
             var subject = payload.Subject;
             var to = new EmailAddress(payload.Email
                                      , $"{payload.FirstName} {payload.LastName}");
