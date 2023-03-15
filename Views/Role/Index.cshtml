@@ -5,46 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Roles</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="text-center">
+    <a asp-action="Create">Assign a Role to a User</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
+<section class="card-container">
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin)
-            </td>
-        </tr>
+    <article class="main-card">
+        <h2>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h2>
+        <p>@Html.DisplayFor(modelItem => item.Email)</p>
+            @if (item.Admin == true)
+            {
+                <p class="admin-card">Admin</p>
+            }
+            else
+            {
+                <p class="">Customer</p>
+            }
+
+    </article>
 }
-    </tbody>
-</table>
+</section>
+
 @ViewBag.Message

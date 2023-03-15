@@ -18,8 +18,38 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #EFEFEF;
 }
+
+/*cards
+    -----------------------------------------------------------------------
+*/
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 55rem;
+    margin: 0 auto;
+}
+
+.main-card {
+    border: 1px solid black;
+    max-width: 25rem;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #FBF7F4;
+}
+
+.main-card h2 {
+    text-align: center;
+}
+
+.admin-card {
+    color: red;
+}
+
+
 
 /*forms
     -----------------------------------------------------------------------
