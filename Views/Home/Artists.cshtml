@@ -16,7 +16,7 @@
         @foreach (var item in Model)
         {
             <article class="main-card">
-                <img src="@item.ImgPath" class="card-img-top" alt="@item.ArtistName">
+                <img src="~/images/@item.ImgPath" class="card-img-top" alt="@item.ArtistName">
                 <h2>@item.ArtistName</h2>
                 <p>@item.ArtistBio</p>
             </article>

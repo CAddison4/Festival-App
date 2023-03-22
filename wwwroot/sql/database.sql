@@ -86,13 +86,13 @@ CREATE TABLE Ticket (
 INSERT INTO TicketType VALUES('General Admission', 50.00);
 
 /* Seed Artist */
-INSERT INTO Artist (artistName, artistBio) VALUES('Billy Talent', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('The Wiggles', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('Sum 41', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('Drake', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('Prince (Hologram)', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('Beethoven', 'sample description');
-INSERT INTO Artist (artistName, artistBio) VALUES('Toto', 'sample description');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Billy Talent', 'Billy Talent is a Canadian rock band from Mississauga, Ontario. They formed in 1993 with lead vocalist Benjamin Kowalewicz, guitarist Ian D Sa, bassist Jonathan Gallant, and drummer Aaron Solowoniuk.In the 28 years since their inception, Billy Talent has sold well over a million physical albums in Canada alone and nearly 3 million albums internationally.','billy-talent-2012.jpg');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('The Wiggles', 'The Wiggles are an Australian childrens music group formed in Sydney in 1991. The group are currently composed of Anthony Field, Lachlan Gillespie, Simon Pryce and Tsehay Hawkins, as well as supporting members Evie Ferris, John Pearce, Caterina Mete and Lucia Field. The Wiggles were founded in 1991 and sing well known hits such as "Fruit Salad"!', 'WIGGLES30.jpeg');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Sum 41', 'Sum 41 is a Canadian rock band from Ajax, Ontario. Originally called Kaspir, the band was formed in 1996 and currently consists of Deryck Whibley, Dave Baksh, Jason "Cone" McCaslin, Tom Thacker, and Frank Zummo.', 'SUM41.png');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Drake', 'Aubrey Drake Graham is a Canadian rapper and singer. An influential figure in contemporary popular music, Drake has been credited for popularizing singing and R&B sensibilities in hip hop. Gaining recognition by starring as Jimmy Brooks in the CTV teen drama series Degrassi: The Next Generation (2001–08), Drake pursued a career in music releasing his debut mixtape Room for Improvement in 2006.', 'DRAKE.jpg');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Prince (Hologram)', 'Prince Rogers Nelson, commonly known mononymously as Prince, was an American singer-songwriter, musician, and record producer. The recipient of numerous awards and nominations, he is widely regarded as one of the greatest musicians of his generation.', 'prince.jpeg');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Beethoven', 'Ludwig van Beethoven was a German composer and pianist. Beethoven remains one of the most admired composers in the history of Western music; his works rank amongst the most performed of the classical music repertoire and span the transition from the Classical period to the Romantic era in classical music.', 'Beethoven.jpg');
+INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Toto', 'Toto is an American rock band formed in 1977 in Los Angeles, California. Toto is known for a musical style that combines elements of pop, rock, soul, funk, progressive rock, hard rock, R&B, blues, and jazz.', 'toto.jpg');
 
 /* Seed Festival */
 INSERT INTO Festival VALUES(CONVERT(DATE, '06/03/2023', 101), 'Vancouver', 1);
