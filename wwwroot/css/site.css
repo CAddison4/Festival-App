@@ -108,24 +108,39 @@ body {
     text-align: center;
 }
 
-.homeBannerDiv{
-    color:white;
-    padding-top:90px;
+.BannerLogo {
+    width: 800px;
+    height: auto;
+    object-fit: fill;
+}
+
+.homeBannerDiv {
+    color: white;
+    padding-top: 90px;
     padding-bottom: 100px;
 }
 
-.homeBannerDiv h1{
-    font-size:100px;
+.homeBannerDiv h4{
+    font-size:40px;
+    padding-bottom: 40px;
+}
+
+.BannerDate {
+    padding-top: 60px;
+}
+
+.homeBannerDiv p {
+    font-size: 20px;
 }
 
 .homeLineupDiv h3 {
-    font-size: 80px;
+    font-size: 100px;
 }
 
 .homeLineupDiv {
     color: white;
     padding-top: 200px;
-    padding-bottom: 80px;
+    padding-bottom: 60px;
     font-size: 25px;
 }
 
@@ -134,8 +149,11 @@ body {
 }
 
 .circle-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
     border-radius: 50%;
-    max-width: 300px;
+
 }
 
 #btnHome {
@@ -154,8 +172,13 @@ header nav.navbar {
     }
 
 .navbar-brand img {
+    transition: background-image 0.5s ease-in-out;
     width: 100px;
-    height: auto;
+}
+
+.navbar-brand img:hover {
+    content: url('/images/small-logo-eyes.png');
+    width:100px;
 }
 
 header nav.navbar .navbar-nav .nav-link {

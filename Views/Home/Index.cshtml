@@ -1,4 +1,5 @@
-﻿@*
+﻿@model IEnumerable<TeamRedInternalProject.Models.Artist>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -20,10 +21,8 @@
         <div class="">
             <div class="homeBannerDiv">
                 <h4> A music + camping festival </h4>
-                <h1 class="BannerLogo"> Team Red Project Logo Here </h1>
-                <p class="BannerDate">Thursday June 8th - Sunday June 11th </p>
-                <br />
-                <p> 123 Mcdonald Ave, Vancouver BC</p>
+                <img class="BannerLogo" src="./images/Logo.png" alt="Logo for team red">
+                <p class="BannerDate">Thursday June 8th - Sunday June 11th <br /> 123 Mcdonald Ave, Vancouver BC</p>
             </div>
         </div>
 
@@ -38,22 +37,21 @@
          <div class="">
            <div class="homeLineupDiv align-content-center">
                 <h2> Just announced! </h2>
-                <h3> Justin Bieber </h3>
-                <p class="lineupLineOne">Prince,  The Wiggles,  Lady gaga</p>
-                <p>Madona,  Michael Jackson,  Young Thug, Taylor Swift, Cordae, Little Uzi </p>
+                <h3> Billy Talent </h3>
+                <p class="lineupLineOne">The Wiggles,  Sum41</p>
+                <p>Drake, Beethoven, Prince, TOTO</p>
             </div>
         </div>
 
-        <div class="HomeImgDiv row mt-5">
-            <div class="col-4">
-                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
-            </div>
-            <div class="col-4">
-                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
-            </div>
-            <div class="col-4">
-                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
-            </div>
+        <div class="HomeImgDiv row mt-5 p-3">
+            @foreach (var item in Model.Take(3))
+            {
+                <article class="col-4">
+                    <img src="~/images/@item.ImgPath" class="img-fluid circle-img" alt="@item.ArtistName">
+                    <h2 class="pt-4 text-white fs-2">@item.ArtistName</h2>
+                    <p class="text-white fs-5">@item.ArtistBio</p>
+                </article>
+            }
         </div>
     </div>
 

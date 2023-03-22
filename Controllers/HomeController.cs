@@ -21,8 +21,8 @@ namespace TeamRedInternalProject.Controllers
 
         public IActionResult Index()
         {
-
-            return View();
+            List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
+            return View(artists);
         }
 
         //list of Artists Performing
@@ -31,7 +31,6 @@ namespace TeamRedInternalProject.Controllers
             
             List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
             return View(artists);
-            //return View();
         }
 
         public IActionResult Privacy()
