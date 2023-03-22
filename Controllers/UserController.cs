@@ -44,8 +44,6 @@ namespace TeamRedInternalProject.Controllers
         {
             string email = User.Identity.Name;
             List<TicketVM> ticketList = _ticketRepo.GetUserTicketVMs(email);
-
-
             return View(ticketList);
         }
 
