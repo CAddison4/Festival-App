@@ -86,22 +86,24 @@ namespace TeamRedInternalProject.Repositories
             return tickets;
         }
         
-        //Get all tickets at the current festival:
-        public List<Ticket> GetAllTickets()
+        //Get all tickets at a festival (current festival by default):
+        public List<Ticket> GetAllTickets(int? festivalId=null)
         {
 
-            List<Ticket> allTickets = _db.Tickets.Where(t => t.Festival.IsCurrent).ToList();
+            List<Ticket> allTickets = (festivalId != null) ? 
+                _db.Tickets.Where(t => t.FestivalId == festivalId).ToList() :
+                _db.Tickets.Where(t => t.Festival.IsCurrent).ToList();
 
             return allTickets;
         }
 
-        public TicketVM GetUserTicketVM(string email, int ticketId)
+        public TicketVM GetUserTicketVM(string email, int ticketId, int? festivalId=null)
         {
             // get user to access first name and last name
             User user = _userRepo.GetUsersByEmail(email);
 
             // get current festival to access location and date
-            Festival currentFestival = _db.Festivals.First(f => f.IsCurrent);
+            Festival festival = _db.Festivals.First(f => (festivalId != null) ? f.FestivalId == festivalId : f.IsCurrent );
 
             Ticket ticket = _db.Tickets.Where(t => t.TicketId == ticketId).Include(t => t.TicketType).First();
 
@@ -110,8 +112,8 @@ namespace TeamRedInternalProject.Repositories
                 TicketId = ticket.TicketId,
                 TicketType = ticket.TicketType.Type,
                 Price = ticket.TicketType.Price,
-                Location = currentFestival.Location,
-                Date = currentFestival.Date,
+                Location = festival.Location,
+                Date = festival.Date,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
             };
@@ -120,21 +122,16 @@ namespace TeamRedInternalProject.Repositories
 
         }
 
-        public List<TicketVM> GetUserTicketVMs(string email)
+        public List<TicketVM> GetUserTicketVMs(string email, int? festivalId=null)
         {
             // get user to access first name and last name
             User user = _userRepo.GetUsersByEmail(email);
 
-            // get current festival to access location and date
-            Festival currentFestival = _db.Festivals.First(f => f.IsCurrent);
+            // get festival to access location and date
+            Festival festival = _db.Festivals.First(f => (festivalId != null) ? f.FestivalId == festivalId : f.IsCurrent );
 
             // get all the tickets that belong to the logged in user and include the navigation property of ticket type
             List<Ticket> allTicketsForUser = _db.Tickets.Where(t => t.Order.Email == email && t.Festival.IsCurrent).Include(t => t.TicketType).ToList();
-
-            if (allTicketsForUser.Count == 0)
-            {
-                throw (new Exception("Tickets do not exist"));
-            }
 
             List<TicketVM> allTicketVMsForUser = new List<TicketVM>();
             foreach(Ticket ticket in allTicketsForUser)
@@ -144,8 +141,8 @@ namespace TeamRedInternalProject.Repositories
                     TicketId = ticket.TicketId,
                     TicketType = ticket.TicketType.Type,
                     Price = ticket.TicketType.Price,
-                    Location = currentFestival.Location,
-                    Date = currentFestival.Date,
+                    Location = festival.Location,
+                    Date = festival.Date,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                 };
