@@ -33,7 +33,8 @@ namespace TeamRedInternalProject.Controllers
             List<User> searchedUsers = _db.Users.Where(u => u.Email.Contains(searchString)).ToList();
             if (String.IsNullOrEmpty(searchString))
             {
-               users = users.Where(u => u.Admin = true).ToList();
+                page = 1;
+               users = users.Where(u => u.Admin == true).ToList();
                 return View(PaginatedList<User>.Create(users, page ?? 1, pageSize)); 
             }
             else
@@ -43,21 +44,20 @@ namespace TeamRedInternalProject.Controllers
             }
         }
 
-        // Assigns role to user.
         [HttpPost]
-        public async Task<IActionResult> Index(UserRoleVM userRole)
+        public async Task<IActionResult> Index(string email, string role)
         {
             string message = string.Empty;
 
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(role))
             {
-                await _userRoleRepo.AddUserRole(userRole.Email, userRole.Role);
-                _userRoleRepo.UpdateUser(userRole.Email);
-
+                await _userRoleRepo.AddUserRole(email, role);
+                _userRoleRepo.UpdateUser(email);
             }
+
             try
             {
-                return RedirectToAction("Index", "Role", new { email = userRole.Email });
+                return RedirectToAction("Index", "Role", new { email = email });
             }
             catch
             {
