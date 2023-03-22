@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.TicketId">Download As PDF</a> |
+                <a asp-action="DownloadTicket" asp-route-ticketId="@item.TicketId">Download As PDF</a>
             </td>
         </tr>
 }

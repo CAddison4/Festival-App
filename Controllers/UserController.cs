@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using NuGet.Protocol;
 using System;
+using System.IO;
+using System.Text;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
@@ -18,9 +22,11 @@ namespace TeamRedInternalProject.Controllers
         private readonly OrderRepo _orderRepo;
         private readonly FestivalRepo _festivalRepo;
         private readonly ConcertContext _db;
+        private readonly IWebHostEnvironment _env;
         
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, IWebHostEnvironment env)
         {
+            _env = env;
             _db = new();
             _logger = logger;
             _userRepo = new UserRepo();
@@ -38,6 +44,30 @@ namespace TeamRedInternalProject.Controllers
 
 
             return View(ticketList);
+        }
+
+        private void CreateTicketFile(TicketVM ticketVM)
+        {
+
+        }
+
+        // Download Tickets
+        public FileResult DownloadTicket(int ticketId) 
+        {
+            string email = User.Identity!.Name!;
+            TicketVM ticketVM = _ticketRepo.GetUserTicketVM(email, ticketId);
+            //string rootPath = _env.WebRootPath;
+            //string filePath = rootPath + $"ticket{ticketId}.txt";
+            string filePath = Path.Combine(Path.GetFullPath(Environment.CurrentDirectory), "Output", $"ticket{ticketId}.txt");
+            using (StreamWriter sw = new(filePath))
+            {
+                sw.Write(ticketVM.ToJson());
+            }
+            var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None, 4096, FileOptions.DeleteOnClose);
+            return File(
+                fileStream: fs,
+                contentType: System.Net.Mime.MediaTypeNames.Application.Octet,
+                fileDownloadName: $"ticket{ticketId}.txt");
         }
 
         //Buy Tickets

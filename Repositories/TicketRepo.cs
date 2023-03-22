@@ -95,6 +95,31 @@ namespace TeamRedInternalProject.Repositories
             return allTickets;
         }
 
+        public TicketVM GetUserTicketVM(string email, int ticketId)
+        {
+            // get user to access first name and last name
+            User user = _userRepo.GetUsersByEmail(email);
+
+            // get current festival to access location and date
+            Festival currentFestival = _db.Festivals.First(f => f.IsCurrent);
+
+            Ticket ticket = _db.Tickets.Where(t => t.TicketId == ticketId).Include(t => t.TicketType).First();
+
+            TicketVM ticketVM = new()
+            {
+                TicketId = ticket.TicketId,
+                TicketType = ticket.TicketType.Type,
+                Price = ticket.TicketType.Price,
+                Location = currentFestival.Location,
+                Date = currentFestival.Date,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
+
+            return ticketVM;
+
+        }
+
         public List<TicketVM> GetUserTicketVMs(string email)
         {
             // get user to access first name and last name
