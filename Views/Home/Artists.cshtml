@@ -4,27 +4,24 @@
     ViewData["Title"] = "Artists";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<h1 class="text-center">Artist Line-up</h1>
 <div class="container-fluid p-0">
     <img src="https://via.placeholder.com/1920x600" class="img-fluid">
 </div>
 
 <div class="container mt-5">
-    <h1>Artists</h1>
 
-    <div class="row">
+
+    <section class="card-container">
         @foreach (var item in Model)
         {
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="@item.ImgPath" class="card-img-top" alt="@item.ArtistName">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.ArtistName</h5>
-                        <p class="card-text">@item.ArtistBio</p>
-                    </div>
-                </div>
-            </div>
+            <article class="main-card">
+                <img src="@item.ImgPath" class="card-img-top" alt="@item.ArtistName">
+                <h2>@item.ArtistName</h2>
+                <p>@item.ArtistBio</p>
+            </article>
         }
-    </div>
+    </section>
 </div>
+
 

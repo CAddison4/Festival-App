@@ -28,6 +28,35 @@ body {
     background-image: url("/images/milad-fakurian-PGdW_bHDbpI-unsplash.jpg")
 }
 
+/*cards
+    -----------------------------------------------------------------------
+*/
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 55rem;
+    margin: 0 auto;
+}
+
+.main-card {
+    border: 1px solid black;
+    max-width: 25rem;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #FBF7F4;
+}
+
+.main-card h2 {
+    text-align: center;
+}
+
+.admin-card {
+    color: red;
+}
+
+
+
 /*forms
     -----------------------------------------------------------------------
 */
