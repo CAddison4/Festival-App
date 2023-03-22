@@ -8,14 +8,53 @@
 
 }
 
-<h1>Index</h1>
-<h2>@purchasedTickets</h2>
-<h2>@ticketRevenue</h2>
+<h1>Admin Dashboard</h1>
+<div class="d-flex gap-4">
+  <div class="bg-white text-center py-4 flex-fill">
+    <h2 class="text-black">@purchasedTickets</h2>
+    <h4>Total Tickets Purchased</h4>
+  </div>
+  <div class="bg-white text-center py-4 flex-fill">
+    <h2 class="text-black">@ticketRevenue</h2>
+    <h4>Total Ticket Revenue</h4>
+  </div>
+</div>
+
+
 
 <div>
-    <h4>TicketRevenueVM</h4>
     <hr />
-    @foreach (var item in Model)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Ticket Name
+                </th>
+                <th>
+                    Ticket Type
+                </th>
+                <th>
+                    Revenue
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model){
+                <tr>
+                    <td>
+                        @item.TicketName
+                    </td>
+                    <td>
+                        @item.TicketsSold
+                    </td>
+                    <td>
+                        @item.Revenue
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+@*    @foreach (var item in Model)
         {
     <dl class="row">
         <dt class = "col-sm-2">
@@ -42,4 +81,4 @@
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
