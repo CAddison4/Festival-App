@@ -145,7 +145,7 @@ body {
 /* Navbar */
 header nav.navbar {
     background-color: transparent !important;
-    font-size: large;
+    font-size: 30px;
 }
 
     header nav.navbar div {
@@ -161,10 +161,11 @@ header nav.navbar {
 header nav.navbar .navbar-nav .nav-link {
     color: white !important;
     text-shadow: 1px 1px 1px #b5739d;
+    font-size: 27px;
 }
 
         header nav.navbar .navbar-nav .nav-link:hover {
-            color: white !important;
+            color: orangered !important;
             text-shadow: 0px 2px 4px #b5739d;
         }
 
@@ -199,7 +200,7 @@ header nav.navbar .navbar-toggler-icon {
 .logged-in .btn {
     display: inline-block;
     border-radius: 20px;
-    padding: 5px 10px;
+    padding: 7px 11px;
 }
 
 .logged-in .email {

@@ -33,7 +33,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Tickets</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Tickets</a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial" />
@@ -75,9 +75,15 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - TeamRedInternalProject
+            <div style="text-align: center; margin-top: 10px;">
+                <a href="#"><img src="./images/icons8-discord-50.png" alt="Discord" width="32" height="32"></a>
+                <a href="#"><img src="./images/icons8-twitter-26.png" alt="Twitter" width="32" height="32"></a>
+                <a href="#"><img src="./images/icons8-instagram-24.png" alt="Instagram" width="32" height="32"></a>
+            </div>
         </div>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
