@@ -125,6 +125,11 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
 
                     HttpContext.Session.SetString("FirstName", user.FirstName);
 
+                    HttpContext.Response.Cookies.Append("FirstName", user.FirstName, new CookieOptions
+                    {
+                        Expires = DateTimeOffset.Now.AddDays(7)
+                    });
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

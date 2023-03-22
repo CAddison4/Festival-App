@@ -15,30 +15,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"></script>
 </head>
-<body>
-
+<body class="HomeBody">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 p-0">
-                <img src="https://via.placeholder.com/1920x600" class="img-fluid">
+        <div class="">
+            <div class="homeBannerDiv">
+                <h4> A music + camping festival </h4>
+                <h1 class="BannerLogo"> Team Red Project Logo Here </h1>
+                <p class="BannerDate">Thursday June 8th - Sunday June 11th </p>
+                <br />
+                <p> 123 Mcdonald Ave, Vancouver BC</p>
             </div>
         </div>
+
         <div class="row">
             <div class="col-12 text-center mt-5">
-                <p>Centered paragraph text</p>
-                <a asp-controller="User" asp-action="PurchaseTickets" class="btn btn-info">Buy Tickets</a>
-                <a asp-action="Artists" class="btn btn-info">Artist Lineup</a>
+                <p>Example text about the festival here</p>
+                <a asp-controller="User" asp-action="PurchaseTickets" class="btn btn-info" id="btnHome">Buy Tickets</a>
+                <a asp-action="Artists" class="btn btn-info" id="btnHome">Artist Lineup</a>
             </div>
         </div>
-        <div class="row mt-5">
+
+         <div class="">
+           <div class="homeLineupDiv align-content-center">
+                <h2> Just announced! </h2>
+                <h3> Justin Bieber </h3>
+                <p class="lineupLineOne">Prince,  The Wiggles,  Lady gaga</p>
+                <p>Madona,  Michael Jackson,  Young Thug, Taylor Swift, Cordae, Little Uzi </p>
+            </div>
+        </div>
+
+        <div class="HomeImgDiv row mt-5">
             <div class="col-4">
-                <img src="https://via.placeholder.com/400x300" class="img-fluid">
+                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
             </div>
             <div class="col-4">
-                <img src="https://via.placeholder.com/400x300" class="img-fluid">
+                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
             </div>
             <div class="col-4">
-                <img src="https://via.placeholder.com/400x300" class="img-fluid">
+                <img src="/images/vadim-bogulov--PwZWV5AWV0-unsplash.jpg" class="img-fluid circle-img">
             </div>
         </div>
     </div>

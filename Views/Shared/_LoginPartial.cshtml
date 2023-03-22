@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Azure.Core;
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @using Microsoft.AspNetCore.Http
@@ -6,9 +7,10 @@
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
+
     {
         <li class="nav-item">
-            <a class="nav-link user-email text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Welcome, @HttpContextAccessor.HttpContext.Session.GetString("FirstName")!</a>
+            <a class="nav-link user-email text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Welcome, @HttpContextAccessor.HttpContext.Request.Cookies["FirstName"]!</a>
         </li>
         <li class="nav-item">
             <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
