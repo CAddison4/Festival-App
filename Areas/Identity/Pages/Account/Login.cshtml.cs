@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using TeamRedInternalProject.Models;
+using TeamRedInternalProject.Repositories;
 
 namespace TeamRedInternalProject.Areas.Identity.Pages.Account
 {
@@ -21,11 +23,14 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserRepo _userRepo;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userRepo= new UserRepo();
+
         }
 
         /// <summary>
@@ -115,6 +120,16 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = _userRepo.GetUsersByEmail(Input.Email);
+
+                    HttpContext.Session.SetString("FirstName", user.FirstName);
+
+                    HttpContext.Response.Cookies.Append("FirstName", user.FirstName, new CookieOptions
+                    {
+                        Expires = DateTimeOffset.Now.AddDays(7)
+                    });
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

@@ -17,10 +17,11 @@ namespace TeamRedInternalProject.Controllers
             _logger = logger;
             _db = db;
             _artistRepo = new ArtistRepo(db);
-        }
+    }
 
         public IActionResult Index()
         {
+
             return View();
         }
 

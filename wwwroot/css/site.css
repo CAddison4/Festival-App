@@ -1,9 +1,13 @@
 /*Layout
     -------------------------------------------------------------------
+    font-family: 'Bebas Neue', cursive;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Work Sans', sans-serif;
 */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed&family=Work+Sans:ital,wght@0,500;0,600;1,300;1,500;1,600&display=swap');
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -18,8 +22,10 @@ html {
 }
 
 body {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 500;
     margin-bottom: 60px;
-    background-color: #EFEFEF;
+    background-image: url("/images/milad-fakurian-PGdW_bHDbpI-unsplash.jpg")
 }
 
 /*cards
@@ -90,4 +96,116 @@ body {
 .login-links a {
     text-decoration: none;
     color: #b5739d;
+}
+
+
+/* HomePage */
+
+.HomeBody {
+    background-image: url(/images/indexBackground1.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+
+.homeBannerDiv{
+    color:white;
+    padding-top:90px;
+    padding-bottom: 100px;
+}
+
+.homeBannerDiv h1{
+    font-size:100px;
+}
+
+.homeLineupDiv h3 {
+    font-size: 80px;
+}
+
+.homeLineupDiv {
+    color: white;
+    padding-top: 200px;
+    padding-bottom: 80px;
+    font-size: 25px;
+}
+
+.HomeImgDiv {
+    padding-bottom: 90px;
+}
+
+.circle-img {
+    border-radius: 50%;
+    max-width: 300px;
+}
+
+#btnHome {
+    background-color: #ebbb66;
+}
+
+/* Navbar */
+header nav.navbar {
+    background-color: transparent !important;
+    font-size: large;
+}
+
+    header nav.navbar div {
+        flex-direction: column;
+        flex-direction: row;
+    }
+
+.navbar-brand img {
+    width: 100px;
+    height: auto;
+}
+
+header nav.navbar .navbar-nav .nav-link {
+    color: white !important;
+    text-shadow: 1px 1px 1px #b5739d;
+}
+
+        header nav.navbar .navbar-nav .nav-link:hover {
+            color: white !important;
+            text-shadow: 0px 2px 4px #b5739d;
+        }
+
+header nav.navbar .navbar-toggler {
+}
+
+header nav.navbar .navbar-toggler-icon {
+    background-color: transparent !important;
+}
+
+
+        header nav.navbar .btn-outline-light:hover {
+            color: #ff0000 !important;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        header nav.navbar .btn-outline-light:focus {
+            box-shadow: 0 0 0 3px #b5739d;
+        }
+
+    header nav.navbar .navbar-collapse .nav-item .nav-link.disabled {
+        color: #a680b8 !important;
+    }
+
+
+
+
+.logged-in .nav-link {
+    display: none;
+}
+
+.logged-in .btn {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.logged-in .email {
+    display: inline-block;
+    border-radius: 20px;
+    border: 2px solid white;
+    padding: 5px 10px;
+    margin-right: 10px;
 }
