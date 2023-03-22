@@ -63,8 +63,7 @@ namespace TeamRedInternalProject.Repositories
             }
 
             foreach (KeyValuePair<string, int> entry in ticketTypeDict)
-            {
-                
+            { 
                 TicketType ticketType = _db.TicketTypes.Where(tt => tt.Type == entry.Key).FirstOrDefault();
                 decimal ticketPrice = ticketType.Price;
                 decimal ticketRevenue = ticketPrice * entry.Value;
@@ -79,28 +78,8 @@ namespace TeamRedInternalProject.Repositories
                 ticketRevenueVMs.Add(ticketRevenueVM);
             }
 
-
             return ticketRevenueVMs;
-
-
-            //Get the type of each ticket sold from the TicketTypes table
-            //Get the count of each ticket sold from the TicketTypes table
-
-            //Get the price of each TicketType
-
-            //Compare the Type of each TicketSold and then multiply the price by the count of the tickets sold
-
-            //
-
-
-                
-            //look up price for each ticket type
-            //add amount together
         }
-
-        //Get Revenue by Ticket
-        //Get Total Tickets Sold
-        //Get Total Revenue
 
         public decimal GetTotalRevenue(List<TicketRevenueVM> ticketRevenueVMs)
         {
