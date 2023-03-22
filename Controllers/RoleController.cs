@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
+using TeamRedInternalProject.Utilities;
 
 namespace TeamRedInternalProject.Controllers
 {
@@ -21,14 +22,50 @@ namespace TeamRedInternalProject.Controllers
             _serviceProvider= serviceProvider;
             _userRepo = new UserRepo();
             _userRoleRepo = new UserRoleRepo(serviceProvider, db);
+            _userRepo = new UserRepo();
             _db = db;
         }
         // GET: RoleController
-        public ActionResult Index()
+        public ActionResult Index(string searchString, int? page)
         {
-            var users = _userRepo.GetUsers();
-            return View(users);
+            int pageSize = 6;
+            List<User> users = _userRepo.GetUsers();
+            List<User> searchedUsers = _db.Users.Where(u => u.Email.Contains(searchString)).ToList();
+            if (String.IsNullOrEmpty(searchString))
+            {
+                page = 1;
+               users = users.Where(u => u.Admin == true).ToList();
+                return View(PaginatedList<User>.Create(users, page ?? 1, pageSize)); 
+            }
+            else
+            {
+                page = 1;
+                return View(PaginatedList<User>.Create(searchedUsers, page ?? 1, pageSize));
+            }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string email, string role)
+        {
+            string message = string.Empty;
+
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(role))
+            {
+                await _userRoleRepo.AddUserRole(email, role);
+                _userRoleRepo.UpdateUser(email);
+            }
+
+            try
+            {
+                return RedirectToAction("Index", "Role", new { email = email });
+            }
+            catch
+            {
+                message = "Error in updating";
+                return View(message);
+            }
+        }
+
 
         // GET: RoleController/Details/5
         public ActionResult Details(int id)

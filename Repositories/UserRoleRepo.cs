@@ -29,6 +29,7 @@ namespace TeamRedInternalProject.Repositories
         }
 
 
+
         // Assign a role to a user.
         public async Task<bool> AddUserRole(string email, string userRole)
         {

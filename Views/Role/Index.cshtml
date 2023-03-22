@@ -1,32 +1,74 @@
-﻿@model IEnumerable<TeamRedInternalProject.Models.User>
+﻿@using TeamRedInternalProject.Models
+@model TeamRedInternalProject.Utilities.PaginatedList<User>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2>User Roles</h2>
+<form asp-action="Index" asp-controller="Role" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <div class="form-group" style="display: inline-block">
+                <span>Search on Name:</span>
+                <input type="text" name="SearchString" required />
+            </div>
+            <div class="form-group" style="display: inline-block">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+            <a asp-action="Index" asp-controller="Role">Back to Full List</a>
+        </p>
+    </div>
+</form>
 
-<h1 class="text-center">Roles</h1>
 
-<p class="text-center">
-    <a asp-action="Create">Assign a Role to a User</a>
-</p>
 
-<section class="card-container">
-@foreach (var item in Model) {
-    <article class="main-card">
-        <h2>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h2>
-        <p>@Html.DisplayFor(modelItem => item.Email)</p>
-            @if (item.Admin == true)
-            {
-                <p class="admin-card">Admin</p>
-            }
-            else
-            {
-                <p class="">Customer</p>
-            }
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
 
-    </article>
+            <th>Change Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    <form asp-action="Index" asp-controller="Role" method="post">
+                        <input type="hidden" name="Email" value="@user.Email" />
+                        <div class="form-check form-switch">
+                            <label class="form-check-label" for="Role">
+                            <input class="form-check-input" type="checkbox" name="Role" value="Admin" @(user.Admin == true ? "checked" : "") />
+                            Admin
+                        </label>
+                            <button type="submit">Save</button>
+                         </div>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-</section>
+<a asp-action="Index"
+   asp-controller="Role"
+   asp-route-page="@(Model.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-controller="Role"
+   asp-route-page="@(Model.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
 
 @ViewBag.Message
