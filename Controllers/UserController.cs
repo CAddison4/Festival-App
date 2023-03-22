@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NuGet.Protocol;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TeamRedInternalProject.Models;
@@ -22,6 +23,7 @@ namespace TeamRedInternalProject.Controllers
         private readonly OrderRepo _orderRepo;
         private readonly FestivalRepo _festivalRepo;
         private readonly ConcertContext _db;
+        private readonly AdminRepo _adminRepo;
         private readonly IWebHostEnvironment _env;
         
         public UserController(ILogger<UserController> logger, IWebHostEnvironment env)
@@ -34,6 +36,7 @@ namespace TeamRedInternalProject.Controllers
             _ticketTypeRepo = new TicketTypeRepo();
             _orderRepo = new OrderRepo();
             _festivalRepo= new FestivalRepo();
+            _adminRepo = new AdminRepo(_db);
         }
 
         // Display all tickets according to user
@@ -56,8 +59,6 @@ namespace TeamRedInternalProject.Controllers
         {
             string email = User.Identity!.Name!;
             TicketVM ticketVM = _ticketRepo.GetUserTicketVM(email, ticketId);
-            //string rootPath = _env.WebRootPath;
-            //string filePath = rootPath + $"ticket{ticketId}.txt";
             string filePath = Path.Combine(Path.GetFullPath(Environment.CurrentDirectory), "Output", $"ticket{ticketId}.txt");
             using (StreamWriter sw = new(filePath))
             {
@@ -73,25 +74,15 @@ namespace TeamRedInternalProject.Controllers
         //Buy Tickets
         public IActionResult PurchaseTickets()
         {
-            //string email = User.Identity.Name;
-            //User user = _userRepo.GetUsersByEmail(email);
+            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = _adminRepo.GetQtyTicketsByType();
 
-            List<TicketType> ticketTypes = _ticketTypeRepo.GetTicketTypes();
+            List<TicketOptionVM> ticketOptions = new();
 
-            List<Ticket> tickets = _ticketRepo.GetAllTickets(); // all tickets at current festival
-
-            List<TicketOptionVM> ticketOptions = new List<TicketOptionVM>();
-
-            foreach (TicketType ticketType in ticketTypes)
-            {
-                int qtyTicketsSoldOfType = tickets.Where(t => t.TicketTypeId == ticketType.TicketTypeId).Count();
-                int? qtyTicketsAvailableOfType = _db.FestivalTicketTypes.Where(ftt => ftt.TicketTypeId == ticketType.TicketTypeId && ftt.Festival.IsCurrent).Select(ftt => ftt.Quantity).FirstOrDefault();
-                int qtyTicketsRemainingOfType = (int)((qtyTicketsAvailableOfType != null) ? qtyTicketsAvailableOfType - qtyTicketsSoldOfType : 0);
-
-                TicketOptionVM ticketOption = new TicketOptionVM()
+            foreach( var item in qtyTicketsByType) {
+                TicketOptionVM ticketOption = new()
                 {
-                    TicketType = ticketType,
-                    QtyRemaining = qtyTicketsRemainingOfType
+                    TicketType = item.Key,
+                    QtyRemaining = item.Value.QtyRemaining
                 };
                 ticketOptions.Add(ticketOption);
             }

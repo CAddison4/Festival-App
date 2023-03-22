@@ -8,10 +8,14 @@ namespace TeamRedInternalProject.Repositories
     public class AdminRepo
     {
         private readonly ConcertContext _db;
+        private readonly TicketRepo _ticketRepo;
+        private readonly TicketTypeRepo _ticketTypeRepo;
 
         public AdminRepo(ConcertContext db)
         {
             _db = db;
+            _ticketRepo = new();
+            _ticketTypeRepo = new();
         }
 
         //Get Tickets - Remaining & Purchased
@@ -26,55 +30,17 @@ namespace TeamRedInternalProject.Repositories
 
         public List<TicketRevenueVM> GetRevenueFromTickets()
         {
-            List<Ticket> ticketsSold = GetTicketsSoldAtCurrentFestival();
-            Dictionary<string, int> ticketTypeDict = new Dictionary<string, int>();
+            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = GetQtyTicketsByType();
             List<TicketRevenueVM> ticketRevenueVMs= new List<TicketRevenueVM>();
-            List<string> ticketTypes = new List<string>();
 
-            string ticketTypeName = "";
-
-
-            foreach (Ticket ticket in ticketsSold)
+            foreach (var item in qtyTicketsByType)
             {
-                TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticket.TicketTypeId).FirstOrDefault();
-                ticketTypeName = ticketType.Type;
-                ticketTypes.Add(ticketTypeName);
-            }
-
-            foreach (string type in ticketTypes)
-            {
-                try
+                TicketRevenueVM ticketRevenueVM = new()
                 {
-                    ticketTypeDict.Add(ticketTypeName, 1);
-                }
-                catch
-                {
-                    if (ticketTypeName == type)
-                    {
-                        int i = 0;
-                        foreach (string ttn in ticketTypes)
-                        {
-                            i++;
-                        }
-
-                        ticketTypeDict[ticketTypeName] = i;
-                    }
-                }
-            }
-
-            foreach (KeyValuePair<string, int> entry in ticketTypeDict)
-            { 
-                TicketType ticketType = _db.TicketTypes.Where(tt => tt.Type == entry.Key).FirstOrDefault();
-                decimal ticketPrice = ticketType.Price;
-                decimal ticketRevenue = ticketPrice * entry.Value;
-
-                TicketRevenueVM ticketRevenueVM = new TicketRevenueVM()
-                {
-                    TicketName = entry.Key,
-                    TicketsSold = entry.Value,
-                    Revenue = ticketRevenue,
+                    TicketName = item.Key.Type,
+                    TicketsSold = item.Value.QtySold,
+                    Revenue = item.Value.QtySold * item.Key.Price
                 };
-
                 ticketRevenueVMs.Add(ticketRevenueVM);
             }
 
@@ -86,13 +52,43 @@ namespace TeamRedInternalProject.Repositories
             decimal totalRevenue = 0;
             foreach (TicketRevenueVM ticketRevenueVM in ticketRevenueVMs)
             {
-                totalRevenue = totalRevenue + ticketRevenueVM.Revenue;
+                totalRevenue += ticketRevenueVM.Revenue;
             }
 
             return totalRevenue;
-           
         }
 
         //Add Ticket Type
+
+
+        public Dictionary<TicketType, QtyTicketsByTypeVM> GetQtyTicketsByType()
+        {
+            List<TicketType> ticketTypes = _ticketTypeRepo.GetTicketTypes(); // all ticket types in the db
+
+            List<Ticket> tickets = _ticketRepo.GetAllTickets(); // all tickets at current festival
+
+            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = new();
+
+            foreach (TicketType ticketType in ticketTypes)
+            {
+                int? qtyAvailable = _db.FestivalTicketTypes.Where(ftt => ftt.TicketTypeId == ticketType.TicketTypeId && ftt.Festival.IsCurrent).Select(ftt => ftt.Quantity).First();
+
+                if(qtyAvailable == null)
+                {
+                    continue; // skip over the ticket Type if it is not in the current festival
+                }
+
+                int qtySold = tickets.Where(t => t.TicketTypeId == ticketType.TicketTypeId).Count();
+                int qtyRemaining = (int)qtyAvailable - qtySold;
+
+                qtyTicketsByType.Add(ticketType, new QtyTicketsByTypeVM
+                {
+                    QtySold = qtySold,
+                    QtyAvailable = (int)qtyAvailable,
+                    QtyRemaining = qtyRemaining,
+                });
+            }
+            return qtyTicketsByType;
+        }
     }
 }
