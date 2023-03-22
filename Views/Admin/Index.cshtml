@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TeamRedInternalProject.ViewModel.TicketRevenueVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var purchasedTickets = (int)ViewData["PurchasedTickets"];
+    var ticketRevenue = (decimal)ViewData["TicketRevenue"];
+
+}
+
+<h1>Index</h1>
+<h2>@purchasedTickets</h2>
+<h2>@ticketRevenue</h2>
+
+<div>
+    <h4>TicketRevenueVM</h4>
+    <hr />
+    @foreach (var item in Model)
+        {
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Ticket Name
+        </dt>
+        <dd class = "col-sm-10">
+            @item.TicketName
+        </dd>
+        <dt class = "col-sm-2">
+            Tickets Sold
+        </dt>
+        <dd class = "col-sm-10">
+                @item.TicketsSold
+        </dd>
+        <dt class = "col-sm-2">
+            Revenue
+        </dt>
+        <dd class = "col-sm-10">
+                @item.Revenue
+        </dd>
+    </dl>
+    }
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
