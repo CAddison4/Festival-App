@@ -79,6 +79,7 @@ namespace TeamRedInternalProject.Controllers
             foreach( var item in qtyTicketsByType) {
                 TicketOptionVM ticketOption = new()
                 {
+                    Id = item.Key.TicketTypeId,
                     TicketType = item.Key,
                     QtyRemaining = item.Value.QtyRemaining
                 };
