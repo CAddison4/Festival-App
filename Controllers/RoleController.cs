@@ -6,9 +6,12 @@ using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
 using TeamRedInternalProject.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TeamRedInternalProject.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly ILogger<UserController> _logger;

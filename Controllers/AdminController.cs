@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
 
 namespace TeamRedInternalProject.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;

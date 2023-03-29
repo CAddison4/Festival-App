@@ -29,15 +29,27 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Artists">Artist Line-up</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Users</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Tickets</a>
                     </li>
-                        <li class="nav-item">
+                    @if (User.IsInRole("Admin"))
+                    {
+                     <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Users</a>
+                     </li>
+                     <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="TicketType" asp-action="Index">Ticket Types</a>
-                        </li>
+                     </li>
+                     <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                     </li>
+                        }
+                        @if (User.IsInRole("Admin"))
+                        {
+
+                        }
+
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
