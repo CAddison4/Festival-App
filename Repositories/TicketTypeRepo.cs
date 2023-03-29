@@ -1,4 +1,5 @@
 ﻿using TeamRedInternalProject.Models;
+using TeamRedInternalProject.ViewModel;
 
 namespace TeamRedInternalProject.Repositories
 {
@@ -12,10 +13,15 @@ namespace TeamRedInternalProject.Repositories
 
         public List<TicketType> GetTicketTypes()
         {
-            return _db.TicketTypes.ToList();
+            return _db.FestivalTicketTypes
+                      .Join(_db.TicketTypes,
+                             ftt => ftt.TicketTypeId,
+                             tt => tt.TicketTypeId,
+                             (ftt, tt) => tt)
+                      .ToList();
         }
 
-        public string CreateTicketType(string type, int price)
+        public string CreateTicketType(string type, decimal price, int quantity, int festivalId)
         {
             string message;
             try
@@ -26,15 +32,24 @@ namespace TeamRedInternalProject.Repositories
                     Price = price
                 };
 
-                _db.TicketTypes.Add(ticketType);
+                FestivalTicketType festivalTicketType = new FestivalTicketType()
+                {
+                    FestivalId = festivalId,
+                    TicketType = ticketType,
+                    Quantity = quantity
+                };
+
+                _db.FestivalTicketTypes.Add(festivalTicketType);
                 _db.SaveChanges();
-                return message = "Success";
+
+                message = "Success";
             }
             catch (Exception ex)
             {
                 message = ex.ToString();
-                return message;
             }
+
+            return message;
         }
     }
 }
