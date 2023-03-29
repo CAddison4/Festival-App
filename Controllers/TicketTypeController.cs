@@ -4,9 +4,12 @@ using TeamRedInternalProject.ViewModel;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TeamRedInternalProject.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TicketTypeController : Controller
     {
         private readonly ILogger<TicketTypeController> _logger;
