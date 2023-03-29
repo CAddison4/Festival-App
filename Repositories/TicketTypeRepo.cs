@@ -11,6 +11,10 @@ namespace TeamRedInternalProject.Repositories
             _db = new();
         }
 
+        /// <summary>
+        /// Gets the ticket types and saves it to a list 
+        /// </summary>
+        /// <returns>List TicketType</returns>
         public List<TicketType> GetTicketTypes()
         {
             return _db.FestivalTicketTypes
@@ -21,26 +25,35 @@ namespace TeamRedInternalProject.Repositories
                       .ToList();
         }
 
-        public string CreateTicketType(string type, decimal price, int quantity, int festivalId)
+        /// <summary>
+        /// Creates the TicketType and saves it to the database, First the ticket type, then the festival, and also links the FestivalTicketType table
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>String Success</returns>
+        public string CreateTicketType(CreateTicketVM model)
         {
             string message;
             try
             {
-                TicketType ticketType = new TicketType()
+                // Create the TicketType object
+                var ticketType = new TicketType
                 {
-                    Type = type,
-                    Price = price
+                    Type = model.TicketType.Type,
+                    Price = model.TicketType.Price
                 };
+                _db.TicketTypes.Add(ticketType);
+                _db.SaveChanges();
 
-                FestivalTicketType festivalTicketType = new FestivalTicketType()
+                // Create the FestivalTicketType object using the TicketType object and the selected Festival object
+                var festivalTicketType = new FestivalTicketType
                 {
-                    FestivalId = festivalId,
-                    TicketType = ticketType,
-                    Quantity = quantity
+                    TicketTypeId = ticketType.TicketTypeId,
+                    FestivalId = model.FestivalTicketType.FestivalId,
+                    Quantity = model.FestivalTicketType.Quantity
                 };
-
                 _db.FestivalTicketTypes.Add(festivalTicketType);
                 _db.SaveChanges();
+
 
                 message = "Success";
             }
