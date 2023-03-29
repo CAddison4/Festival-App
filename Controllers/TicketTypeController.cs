@@ -12,25 +12,29 @@ namespace TeamRedInternalProject.Controllers
         private readonly ILogger<TicketTypeController> _logger;
         private readonly TicketTypeRepo _ticketTypeRepo;
         private readonly ConcertContext _db;
-        // GET: TicketTypeController
+
         public TicketTypeController(ILogger<TicketTypeController> logger, ConcertContext db)
         {  
             _logger = logger;
             _ticketTypeRepo = new TicketTypeRepo();
             _db = db;
         }
+
+
+        /// <summary>
+        /// Grabs the ticket types
+        /// </summary>
+        /// <returns>ActionResult Index View</returns>
             public ActionResult Index()
         {
             List<TicketType> result = _ticketTypeRepo.GetTicketTypes();
             return View(result);
         }
-
-        // GET: TicketTypeController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
+ 
+        /// <summary>
+        /// Creates a new ticket type for both the TicketType table, grabs the Festivals table and the FestivalsTicketType
+        /// </summary>
+        /// <returns>Action Result Create View</returns>
         public ActionResult Create()
         {
             var viewModel = new CreateTicketVM
@@ -43,71 +47,25 @@ namespace TeamRedInternalProject.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Grabs the Data the Admin gave and saves it to the database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Action Result Http Create</returns>
         [HttpPost]
         public ActionResult Create(CreateTicketVM model)
         {
+            String result = _ticketTypeRepo.CreateTicketType(model);
 
-
-            // Create the TicketType object
-            var ticketType = new TicketType
+            if (result == "Success")
             {
-                Type = model.TicketType.Type,
-                Price = model.TicketType.Price
-            };
-            _db.TicketTypes.Add(ticketType);
-            _db.SaveChanges();
-
-            // Create the FestivalTicketType object using the TicketType object and the selected Festival object
-            var festivalTicketType = new FestivalTicketType
-            {
-                TicketTypeId = ticketType.TicketTypeId,
-                FestivalId = model.FestivalTicketType.FestivalId,
-                Quantity = model.FestivalTicketType.Quantity
-            };
-            _db.FestivalTicketTypes.Add(festivalTicketType);
-            _db.SaveChanges();
-
-            return RedirectToAction("Index");
-        }        // GET: TicketTypeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TicketTypeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: TicketTypeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            return View(model);
+            
+            
 
-        // POST: TicketTypeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
