@@ -45,13 +45,15 @@
         <dt class = "col-sm-2">
             Tickets
         </dt>
+        <dd class="col-sm-10">
         @foreach (var entry in Model.TicketTypes) 
         {
-                <dd class="col-sm-10">
-                Type: @Html.DisplayFor(modelItem => entry.Key) | 
-                Quantity: @Html.DisplayFor(modelItem => entry.Value) 
-                </dd>
+                <div class="flex flex-column">
+                Type: @Html.DisplayFor(modelItem => entry.Key) |
+                Quantity: @Html.DisplayFor(modelItem => entry.Value)
+                </div>
         }
+        </dd>
 
     </dl>
 </div>

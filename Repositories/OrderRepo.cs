@@ -1,4 +1,5 @@
-﻿using TeamRedInternalProject.Models;
+﻿using System.Net.Sockets;
+using TeamRedInternalProject.Models;
 using TeamRedInternalProject.ViewModel;
 
 namespace TeamRedInternalProject.Repositories
@@ -81,12 +82,11 @@ namespace TeamRedInternalProject.Repositories
         /// <returns>Order Confirmation View Model Object</returns>
         public PurchaseConfirmationVM CreateOrderConfirmation(Order order, User user, List<Ticket> tickets)
         {
-            Dictionary<string, int> ticketTypeDict = new Dictionary<string, int>();
+            Dictionary<string, int> ticketTypeCounts = new Dictionary<string, int>();
             List<string> ticketTypes = new List<string>();
 
             string ticketTypeName = "";
             DateTime orderDate = order.OrderDate;
-
 
             foreach (Ticket ticket in tickets)
             {
@@ -97,24 +97,16 @@ namespace TeamRedInternalProject.Repositories
 
             foreach (string type in ticketTypes)
             {
-                try
+                if (ticketTypeCounts.ContainsKey(type))
                 {
-                    ticketTypeDict.Add(ticketTypeName, 1);
+                    ticketTypeCounts[type]++;
                 }
-                catch
+                else
                 {
-                    if (ticketTypeName == type)
-                    {
-                        int i = 0;
-                        foreach (string ttn in ticketTypes)
-                        {
-                            i++;
-                        }
-
-                        ticketTypeDict[ticketTypeName] = i;
-                    }
+                    ticketTypeCounts.Add(type, 1);
                 }
             }
+
             PurchaseConfirmationVM purchaseConfirmationVM = new PurchaseConfirmationVM()
             {
                 OrderId = order.OrderId,
@@ -123,7 +115,7 @@ namespace TeamRedInternalProject.Repositories
                 OrderDate = orderDate,
                 OrderEmail = user.Email,
                 PayerEmail = order.PayerEmail,
-                TicketTypes = ticketTypeDict
+                TicketTypes = ticketTypeCounts
             };
 
             return purchaseConfirmationVM;
