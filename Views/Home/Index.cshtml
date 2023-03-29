@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamRedInternalProject.Models.Artist>
+﻿@model TeamRedInternalProject.ViewModel.IndexPageVM
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -22,7 +22,8 @@
             <div class="homeBannerDiv">
                 <h4> Vancouver's #1 Music Festival</h4>
                 <img class="BannerLogo" src="./images/Logo.png" alt="Logo for team red">
-                <p class="BannerDate">Thursday June 8th - Sunday June 11th <br /> 123 Mcdonald Ave, Vancouver BC</p>
+                <p class="BannerDate">@Model.CurrentFestival.Date.ToString("MMMM d\\t\\h yyyy")
+                <br /> @Model.CurrentFestival.Location</p>
             </div>
         </div>
 
@@ -34,17 +35,8 @@
             </div>
         </div>
 
-         <div class="">
-           <div class="homeLineupDiv align-content-center">
-                <h2> Just announced! </h2>
-                <h3> Billy Talent </h3>
-                <p class="lineupLineOne">The Wiggles,  Sum41</p>
-                <p>Drake, Beethoven, Prince, TOTO</p>
-            </div>
-        </div>
-
         <div class="HomeImgDiv row mt-5 p-3">
-            @foreach (var item in Model.Take(3))
+            @foreach (var item in Model.Artists.Take(3))
             {
                 <article class="col-4">
                     <img src="~/images/@item.ImgPath" class="img-fluid circle-img" alt="@item.ArtistName">
