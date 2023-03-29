@@ -25,7 +25,9 @@ body {
     font-family: 'Bebas Neue', sans-serif;
     font-weight: 500;
     margin-bottom: 60px;
-    background-image: url("/images/milad-fakurian-PGdW_bHDbpI-unsplash.jpg")
+    background-image: url("/images/milad-fakurian-PGdW_bHDbpI-unsplash.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 /*cards
@@ -40,14 +42,15 @@ body {
 }
 
 .main-card {
-    border: 1px solid black;
-    max-width: 25rem;
-    padding: 1rem;
+    border: 1px solid white;
+    max-width: 30rem;
+    padding: 1.5rem;
     margin: 1rem;
-    background-color: #FBF7F4;
+    background-color: #e3d1ed;
 }
 
 .main-card h2 {
+    padding-top: 1rem;
     text-align: center;
 }
 
@@ -126,7 +129,7 @@ body {
 }
 
 .BannerDate {
-    padding-top: 60px;
+    padding-top: 70px;
 }
 
 .homeBannerDiv p {
@@ -156,8 +159,15 @@ body {
 
 }
 
+.row {
+    font-size: 25px;
+}
+
 #btnHome {
     background-color: #ebbb66;
+    padding: 1rem;
+    font-size: 20px;
+    margin: 20px;
 }
 
 /* Navbar */
