@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
+using TeamRedInternalProject.ViewModel;
 
 // Not logged in Users, Artists, Index/Homepage, Login/Register 
 namespace TeamRedInternalProject.Controllers
@@ -11,18 +12,25 @@ namespace TeamRedInternalProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ConcertContext _db;
         private readonly ArtistRepo _artistRepo;
+        private readonly FestivalRepo _festivalRepo;
 
         public HomeController(ILogger<HomeController> logger, ConcertContext db)
         {
             _logger = logger;
             _db = db;
             _artistRepo = new ArtistRepo(db);
+            _festivalRepo = new FestivalRepo();
     }
 
         public IActionResult Index()
         {
             List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
-            return View(artists);
+
+            Festival currentFestival = _db.Festivals.Where(f => f.IsCurrent).First();
+
+            IndexPageVM indexPageVM = new IndexPageVM() { Artists = artists, CurrentFestival = currentFestival};
+
+            return View(indexPageVM);
         }
 
         //list of Artists Performing
