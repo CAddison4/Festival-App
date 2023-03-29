@@ -61,9 +61,9 @@ namespace TeamRedInternalProject.Repositories
                 _db.Orders.Add(order);
                 _db.SaveChanges();
             }
-            catch
+            catch (Exception ex)
             {
-                throw (new Exception("Could not add order"));
+                throw (new Exception(ex.Message));
             }
 
             return order;
