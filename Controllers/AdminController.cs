@@ -32,7 +32,7 @@ namespace TeamRedInternalProject.Controllers
 
             List<TicketRevenueVM> ticketRevenue = _adminRepo.GetRevenueFromTickets();
             int purchasedTickets = GetTicketsPurchased();
-            decimal totalRevenue = GetTicketRevenue();
+            decimal totalRevenue = GetTicketRevenue(ticketRevenue);
 
             ViewData["PurchasedTickets"] = purchasedTickets;
             ViewData["TicketRevenue"] = totalRevenue;
@@ -51,9 +51,8 @@ namespace TeamRedInternalProject.Controllers
             return ticketsPurchased;
         }
 
-        public decimal GetTicketRevenue()
+        public decimal GetTicketRevenue(List<TicketRevenueVM> ticketRevenueVMs)
         {
-            List<TicketRevenueVM> ticketRevenueVMs = _adminRepo.GetRevenueFromTickets();
             decimal ticketRevenue = 0;
             foreach (TicketRevenueVM ticketRevenueVM in ticketRevenueVMs)
             {
