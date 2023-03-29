@@ -101,7 +101,7 @@ body {
 }
 
 
-/* HomePage */
+/* HomePage -------------------------------------------------- */
 
 .HomeBody {
     background-image: url(/images/indexBackground1.jpg);
@@ -159,7 +159,7 @@ body {
     margin: 20px;
 }
 
-/* Navbar */
+/* Navbar --------------------------------------------------- */
 header nav.navbar {
     background-color: transparent !important;
     font-size: 30px;
