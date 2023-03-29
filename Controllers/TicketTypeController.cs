@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TeamRedInternalProject.Models;
+using TeamRedInternalProject.ViewModel;
 using TeamRedInternalProject.Repositories;
+using TeamRedInternalProject.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TeamRedInternalProject.Controllers
 {
@@ -29,29 +31,44 @@ namespace TeamRedInternalProject.Controllers
             return View();
         }
 
-        // GET: TicketTypeController/Create
         public ActionResult Create()
         {
-            return View();
+            var viewModel = new CreateTicketVM
+            {
+                TicketType = new TicketType(),
+                FestivalTicketType = new FestivalTicketType(),
+                Festivals = _db.Festivals.ToList()
+            };
+
+            return View(viewModel);
         }
 
-        // POST: TicketTypeController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(string type, int price)
+        public ActionResult Create(CreateTicketVM model)
         {
-            try
-            {
-                _ticketTypeRepo.CreateTicketType(type, price);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: TicketTypeController/Edit/5
+
+            // Create the TicketType object
+            var ticketType = new TicketType
+            {
+                Type = model.TicketType.Type,
+                Price = model.TicketType.Price
+            };
+            _db.TicketTypes.Add(ticketType);
+            _db.SaveChanges();
+
+            // Create the FestivalTicketType object using the TicketType object and the selected Festival object
+            var festivalTicketType = new FestivalTicketType
+            {
+                TicketTypeId = ticketType.TicketTypeId,
+                FestivalId = model.FestivalTicketType.FestivalId,
+                Quantity = model.FestivalTicketType.Quantity
+            };
+            _db.FestivalTicketTypes.Add(festivalTicketType);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }        // GET: TicketTypeController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();

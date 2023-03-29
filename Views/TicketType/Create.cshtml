@@ -1,39 +1,60 @@
-﻿@model TeamRedInternalProject.Models.TicketType
+﻿@model TeamRedInternalProject.ViewModel.CreateTicketVM
 
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create";
 }
 
-<h1>Create</h1>
+<h2>Create</h2>
 
-<h4>TicketType</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <h3>Ticket Type</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TicketType.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TicketType.Type, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TicketType.Type, "", new { @class = "text-danger" })
+        </div>
     </div>
-</div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TicketType.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TicketType.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TicketType.Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <h3>Festival Ticket Type</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FestivalTicketType.FestivalId, "Festival", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.FestivalTicketType.FestivalId, new SelectList(Model.Festivals, "FestivalId", "Location"), "Select a festival", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.FestivalTicketType.FestivalId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.FestivalTicketType.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.FestivalTicketType.Quantity, new { htmlAttributes = new { @class = "form-control" }})
+        @Html.ValidationMessageFor(model => model.FestivalTicketType.Quantity, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Back to List", "Index")
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
