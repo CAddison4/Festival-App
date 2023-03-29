@@ -49,7 +49,7 @@
         @foreach (var entry in Model.TicketTypes) 
         {
                 <div class="flex flex-column">
-                Type: @Html.DisplayFor(modelItem => entry.Key) |
+                @Html.DisplayFor(modelItem => entry.Key) |
                 Quantity: @Html.DisplayFor(modelItem => entry.Value)
                 </div>
         }
