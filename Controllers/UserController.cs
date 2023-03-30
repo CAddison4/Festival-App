@@ -72,16 +72,16 @@ namespace TeamRedInternalProject.Controllers
         //Buy Tickets
         public IActionResult PurchaseTickets()
         {
-            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = _adminRepo.GetQtyTicketsByType();
+            Dictionary<int, int> qtyTicketsAvailableByType = _adminRepo.GetQtyTicketsAvailableByType();
 
             List<TicketOptionVM> ticketOptions = new();
 
-            foreach( var item in qtyTicketsByType) {
+            foreach( var item in qtyTicketsAvailableByType) {
                 TicketOptionVM ticketOption = new()
                 {
-                    Id = item.Key.TicketTypeId,
-                    TicketType = item.Key,
-                    QtyRemaining = item.Value.QtyRemaining
+                    Id = item.Key,
+                    TicketType = _db.TicketTypes.Find(item.Key)!,
+                    QtyAvailable = item.Value
                 };
                 ticketOptions.Add(ticketOption);
             }

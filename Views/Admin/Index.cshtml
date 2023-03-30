@@ -1,25 +1,24 @@
-﻿@model IEnumerable<TeamRedInternalProject.ViewModel.TicketRevenueVM>
+﻿@model IEnumerable<TeamRedInternalProject.ViewModel.TicketSalesVM>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var purchasedTickets = (int)ViewData["PurchasedTickets"];
-    var ticketRevenue = (decimal)ViewData["TicketRevenue"];
+    int totalTicketsPurchased = (int)(ViewData["TotalTicketsPurchased"] ?? 0);
+    decimal totalRevenue = (decimal)(ViewData["TotalRevenue"] ?? 0.0);
 
 }
 
 <h1>Admin Dashboard</h1>
 <div class="d-flex gap-4">
   <div class="bg-white text-center py-4 flex-fill">
-    <h2 class="text-black">@purchasedTickets</h2>
+        <h2 class="text-black">@totalTicketsPurchased</h2>
     <h4>Total Tickets Purchased</h4>
   </div>
   <div class="bg-white text-center py-4 flex-fill">
-        <h2 class="text-black">@ticketRevenue.ToString("F2")</h2>
+        <h2 class="text-black">@totalRevenue.ToString("C")</h2>
     <h4>Total Ticket Revenue</h4>
   </div>
 </div>
-
 
 
 <div>
@@ -28,10 +27,13 @@
         <thead>
             <tr>
                 <th>
-                    Ticket Name
+                    Ticket Type
                 </th>
                 <th>
-                    Ticket Type
+                    Quantity Sold
+                </th>
+                <th>
+                    Quantity Remaining
                 </th>
                 <th>
                     Revenue
@@ -42,43 +44,19 @@
             @foreach(var item in Model){
                 <tr>
                     <td>
-                        @item.TicketName
+                        @item.TicketType
                     </td>
                     <td>
                         @item.TicketsSold
                     </td>
                     <td>
-                        @item.Revenue
+                        @item.TicketsAvailable
+                    </td>
+                    <td>
+                        @item.Revenue.ToString("C")
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-@*    @foreach (var item in Model)
-        {
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Ticket Name
-        </dt>
-        <dd class = "col-sm-10">
-            @item.TicketName
-        </dd>
-        <dt class = "col-sm-2">
-            Tickets Sold
-        </dt>
-        <dd class = "col-sm-10">
-                @item.TicketsSold
-        </dd>
-        <dt class = "col-sm-2">
-            Revenue
-        </dt>
-        <dd class = "col-sm-10">
-                @item.Revenue
-        </dd>
-    </dl>
-    }
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>*@

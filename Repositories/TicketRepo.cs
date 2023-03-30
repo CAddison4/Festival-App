@@ -87,14 +87,14 @@ namespace TeamRedInternalProject.Repositories
         }
         
         //Get all tickets at a festival (current festival by default):
-        public List<Ticket> GetAllTickets(int? festivalId=null)
+        public List<Ticket> GetAllTickets(int? festivalId=null, bool includeTicketTypes=false)
         {
 
-            List<Ticket> allTickets = (festivalId != null) ? 
-                _db.Tickets.Where(t => t.FestivalId == festivalId).ToList() :
-                _db.Tickets.Where(t => t.Festival.IsCurrent).ToList();
+            IQueryable<Ticket> allTickets = (festivalId != null) ? 
+                _db.Tickets.Where(t => t.FestivalId == festivalId) :
+                _db.Tickets.Where(t => t.Festival.IsCurrent);
 
-            return allTickets;
+            return includeTicketTypes ? allTickets.Include(t => t.TicketType).ToList() : allTickets.ToList();
         }
 
         public TicketVM GetUserTicketVM(string email, int ticketId, int? festivalId=null)

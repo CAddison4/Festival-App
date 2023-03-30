@@ -1,5 +1,7 @@
 ﻿using EllipticCurve.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Net.Sockets;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.ViewModel;
 
@@ -18,39 +20,58 @@ namespace TeamRedInternalProject.Repositories
             _ticketTypeRepo = new();
         }
 
-        //Get Tickets - Remaining & Purchased
-
-        public List<Ticket> GetTicketsSoldAtCurrentFestival()
+        /// <summary>
+        /// Gets the total tickets sold at a given festival.
+        /// If no festival is specified, default is the current festival.
+        /// </summary>
+        /// <returns>The total number of tickets sold at the given festival</returns>
+        public int GetTotalTicketsSold(int? festivalId=null)
         {
-            List<Ticket> ticketList = new List<Ticket>();
-            
-            ticketList = _db.Tickets.Where(t => t.Festival.IsCurrent).ToList();
-            return ticketList;
+            List<Ticket> tickets = _ticketRepo.GetAllTickets(festivalId);
+            return tickets.Count;
         }
 
-        public List<TicketRevenueVM> GetRevenueFromTickets()
+        /// <summary>
+        /// Get the number of tickets sold and corresponding revenue
+        /// for each ticket type at a given festival.
+        /// If no festival is specified, default is the current festival.
+        /// </summary>
+        /// <returns>A list of objects with the properties  
+        ///     {TicketType, TicketsSold, Revenue}
+        /// </returns>
+        public List<TicketSalesVM> GetTicketSalesDataByTicketType(int? festivalId=null)
         {
-            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = GetQtyTicketsByType();
-            List<TicketRevenueVM> ticketRevenueVMs= new List<TicketRevenueVM>();
 
-            foreach (var item in qtyTicketsByType)
+            Dictionary<int, int> qtyTicketsAvailableByType = this.GetQtyTicketsAvailableByType(festivalId);
+            Dictionary<int, int> qtyTicketsSoldByType = this.GetQtyTicketsSoldByType(festivalId);
+            List<TicketSalesVM> ticketSalesVMs = new();
+
+            foreach (int ticketTypeId in qtyTicketsSoldByType.Keys)
             {
-                TicketRevenueVM ticketRevenueVM = new()
+                TicketType ticketType = _db.TicketTypes.Find(ticketTypeId)!;
+                TicketSalesVM ticketSalesVM = new()
                 {
-                    TicketName = item.Key.Type,
-                    TicketsSold = item.Value.QtySold,
-                    Revenue = item.Value.QtySold * item.Key.Price
+                    TicketType = ticketType.Type,
+                    TicketsSold = qtyTicketsSoldByType[ticketTypeId],
+                    TicketsAvailable = qtyTicketsAvailableByType[ticketTypeId],
+                    Revenue = qtyTicketsSoldByType[ticketTypeId] * ticketType.Price,
                 };
-                ticketRevenueVMs.Add(ticketRevenueVM);
+
+                ticketSalesVMs.Add(ticketSalesVM);
             }
 
-            return ticketRevenueVMs;
+            return ticketSalesVMs;
         }
 
-        public decimal GetTotalRevenue(List<TicketRevenueVM> ticketRevenueVMs)
+        /// <summary>
+        /// Calculates total revenue of all tickets in the ticketRevenueVMs list
+        /// </summary>
+        /// <param name="ticketRevenueVMs"></param>
+        /// <returns>Total Revenue</returns>
+        public decimal GetTotalRevenue(List<TicketSalesVM> ticketRevenueVMs)
         {
             decimal totalRevenue = 0;
-            foreach (TicketRevenueVM ticketRevenueVM in ticketRevenueVMs)
+            foreach (TicketSalesVM ticketRevenueVM in ticketRevenueVMs)
             {
                 totalRevenue += ticketRevenueVM.Revenue;
             }
@@ -58,37 +79,85 @@ namespace TeamRedInternalProject.Repositories
             return totalRevenue;
         }
 
-        //Add Ticket Type
 
-
-        public Dictionary<TicketType, QtyTicketsByTypeVM> GetQtyTicketsByType()
+        /// <summary>
+        /// Creates a dictionary mapping the ticketTypeId of each of the ticket types at a given festival
+        /// to the quantity of tickets sold of that type at that festival.
+        /// If no festival is specified, default is the current festival.
+        /// </summary>
+        /// <returns>The dictionary described above</returns>
+        public Dictionary<int, int> GetQtyTicketsSoldByType(int? festivalId=null)
         {
-            List<TicketType> ticketTypes = _ticketTypeRepo.GetTicketTypes(); // all ticket types in the db
+            List<Ticket> tickets = _ticketRepo.GetAllTickets(festivalId, true); // all tickets at current festival
 
-            List<Ticket> tickets = _ticketRepo.GetAllTickets(); // all tickets at current festival
+            Dictionary<int, int> qtyTicketsSoldByType = new();
 
-            Dictionary<TicketType, QtyTicketsByTypeVM> qtyTicketsByType = new();
+            foreach (Ticket ticket in tickets)
+            {
+                if (qtyTicketsSoldByType.ContainsKey(ticket.TicketType.TicketTypeId))
+                {
+                    qtyTicketsSoldByType[ticket.TicketType.TicketTypeId]++;
+                }
+                else
+                {
+                    qtyTicketsSoldByType[ticket.TicketType.TicketTypeId] = 1;
+                }
+            }
+
+            return qtyTicketsSoldByType;
+        }
+
+
+        /// <summary>
+        /// Get the quantity of tickets available for purchase by type at the given festival
+        /// If no festival is specified, the default is the current festival
+        /// </summary>
+        /// <returns>A dictionary mapping the ticketTypeId of each ticket type existing at the given festival 
+        /// to the number of tickets available of that type</returns>
+        public Dictionary<int, int> GetQtyTicketsAvailableByType(int? festivalId = null)
+        {
+            List<Ticket> tickets = _ticketRepo.GetAllTickets(festivalId); // all tickets at given festival
+            List<TicketType> ticketTypes = _db.TicketTypes.ToList(); // list of all ticket types in the db
+            Dictionary<int, int> qtyTicketsAvailableByType = new();
 
             foreach (TicketType ticketType in ticketTypes)
             {
-                int? qtyAvailable = _db.FestivalTicketTypes.Where(ftt => ftt.TicketTypeId == ticketType.TicketTypeId && ftt.Festival.IsCurrent).Select(ftt => ftt.Quantity).First();
+                int? qtyAtCurrentFestival = this.GetQtyTicketsOfTypeById(ticketType.TicketTypeId, festivalId);
 
-                if(qtyAvailable == null)
+                if (qtyAtCurrentFestival == null)
                 {
-                    continue; // skip over the ticket Type if it is not in the current festival
+                    continue; // skip over the ticket type if it does not exist at the current festival
                 }
 
                 int qtySold = tickets.Where(t => t.TicketTypeId == ticketType.TicketTypeId).Count();
-                int qtyRemaining = (int)qtyAvailable - qtySold;
 
-                qtyTicketsByType.Add(ticketType, new QtyTicketsByTypeVM
-                {
-                    QtySold = qtySold,
-                    QtyAvailable = (int)qtyAvailable,
-                    QtyRemaining = qtyRemaining,
-                });
+                int qtyAvailable = (int)qtyAtCurrentFestival - qtySold;
+
+                qtyTicketsAvailableByType.Add(ticketType.TicketTypeId, qtyAvailable);
             }
-            return qtyTicketsByType;
+            return qtyTicketsAvailableByType;
         }
+
+        /// <summary>
+        /// Gets the quantity of tickets of the given ticket type at a given festival
+        /// If no festival is specified, the default is the current festival
+        /// </summary>
+        /// <param name="ticketTypeId"></param>
+        /// <returns>The quantity or null (if the given ticket type does not exist at the given festival)</returns>
+        private int? GetQtyTicketsOfTypeById(int ticketTypeId, int? festivalId=null)
+        {
+            int? qtyAtSelectedFestival = _db.FestivalTicketTypes
+                    .Where(ftt => ftt.Festival.FestivalId == festivalId && ftt.TicketTypeId == ticketTypeId)
+                    .Select(ftt => ftt.Quantity)
+                    .FirstOrDefault();
+
+            int? qtyAtCurrentFestival = _db.FestivalTicketTypes
+                    .Where(ftt => ftt.Festival.IsCurrent && ftt.TicketTypeId == ticketTypeId)
+                    .Select(ftt => ftt.Quantity)
+                    .FirstOrDefault();
+
+            return (festivalId == null) ? qtyAtCurrentFestival : qtyAtSelectedFestival;
+        }
+
     }
 }
