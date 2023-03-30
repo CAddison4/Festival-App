@@ -8,6 +8,6 @@ namespace TeamRedInternalProject.ViewModel
         [Key]
         public int Id { get; set; }
         public TicketType TicketType { get; set; }
-        public int QtyRemaining { get; set; }
+        public int QtyAvailable { get; set; }
     }
 }
