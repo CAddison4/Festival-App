@@ -52,6 +52,7 @@ namespace TeamRedInternalProject.Repositories
                 TicketSalesVM ticketSalesVM = new()
                 {
                     TicketType = ticketType.Type,
+                    Price = ticketType.Price,
                     TicketsSold = qtyTicketsSoldByType[ticketTypeId],
                     TicketsAvailable = qtyTicketsAvailableByType[ticketTypeId],
                     Revenue = qtyTicketsSoldByType[ticketTypeId] * ticketType.Price,
@@ -103,6 +104,14 @@ namespace TeamRedInternalProject.Repositories
                     qtyTicketsSoldByType[ticket.TicketType.TicketTypeId] = 1;
                 }
             }
+
+            List<TicketType> ticketTypes = _ticketTypeRepo.GetTicketTypes();
+
+            foreach (TicketType ticketType in ticketTypes)
+                if (!qtyTicketsSoldByType.ContainsKey(ticketType.TicketTypeId))
+                {
+                    qtyTicketsSoldByType[ticketType.TicketTypeId] = 0;
+                }
 
             return qtyTicketsSoldByType;
         }
