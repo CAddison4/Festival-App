@@ -81,10 +81,12 @@
     </tbody>
 </table>
 
+ 
 <div style="display: @(Model.Count() == 0 ? "block" : "none");">
     <p>Looks like you don't have any tickets yet ... </p>
-    <a asp-action="PurchaseTickets">Purchase Tickets Now</a>
 </div>
+
+
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -102,5 +104,5 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
-
+<a asp-action="PurchaseTickets">Purchase Tickets Now</a>
 @ViewBag.Message

@@ -48,7 +48,7 @@ namespace TeamRedInternalProject.Controllers
             int pageSize = 6;
             if (String.IsNullOrEmpty(searchString))
             {
-                page = 1;
+
                 return View(PaginatedList<TicketVM>.Create(ticketList, page ?? 1, pageSize));
             }
             else
