@@ -64,5 +64,21 @@ namespace TeamRedInternalProject.Repositories
 
             return message;
         }
+        public string DeleteTicketType(int ticketTypeId)
+        {
+            TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticketTypeId).FirstOrDefault();
+            FestivalTicketType festivalTicketType = _db.FestivalTicketTypes.Where(ftt => ftt.TicketTypeId == ticketTypeId).FirstOrDefault();
+
+            _db.FestivalTicketTypes.Remove(festivalTicketType);
+            _db.TicketTypes.Remove(ticketType);
+
+            _db.SaveChanges();
+
+            string message = $"Ticket Type {ticketType.Type} removed";
+           
+
+            return message;
+
+        }
     }
 }

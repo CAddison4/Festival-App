@@ -51,6 +51,7 @@ namespace TeamRedInternalProject.Repositories
                 TicketType ticketType = _db.TicketTypes.Find(ticketTypeId)!;
                 TicketSalesVM ticketSalesVM = new()
                 {
+                    TicketTypeId = ticketTypeId,
                     TicketType = ticketType.Type,
                     Price = ticketType.Price,
                     TicketsSold = qtyTicketsSoldByType[ticketTypeId],

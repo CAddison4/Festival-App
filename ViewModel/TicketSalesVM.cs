@@ -4,6 +4,7 @@ namespace TeamRedInternalProject.ViewModel
 {
     public class TicketSalesVM
     {
+        public int TicketTypeId { get; set; }
         public string TicketType { get; set; }
         public decimal Price { get; set; }
         public  int TicketsSold { get; set; }
