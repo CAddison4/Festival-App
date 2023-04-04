@@ -11,6 +11,7 @@ using System.Text;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
+using TeamRedInternalProject.Utilities;
 
 namespace TeamRedInternalProject.Controllers
 {
@@ -40,11 +41,24 @@ namespace TeamRedInternalProject.Controllers
         }
 
         // Display all tickets according to user
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int? page)
         {
             string email = User.Identity.Name;
             List<TicketVM> ticketList = _ticketRepo.GetUserTicketVMs(email);
-            return View(ticketList);
+            int pageSize = 6;
+            if (String.IsNullOrEmpty(searchString))
+            {
+                page = 1;
+                return View(PaginatedList<TicketVM>.Create(ticketList, page ?? 1, pageSize));
+            }
+            else
+            {
+                List<TicketVM> searchedTicketList = _ticketRepo.GetUserTicketVMs(email).Where(t => t.TicketType.Contains(searchString)).ToList();
+
+                page = 1;
+                return View(PaginatedList<TicketVM>.Create(searchedTicketList, page ?? 1, pageSize));
+            }
+
         }
 
         private void CreateTicketFile(TicketVM ticketVM)
