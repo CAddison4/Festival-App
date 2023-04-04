@@ -61,12 +61,12 @@
                         <span>Amount: </span>
                         <span id="@item.Id-amount" class="amount">0.00</span>
                     </td>
+
                 }
             </tr>
         }
     </tbody>
 </table>
-
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     <div>
@@ -81,6 +81,7 @@
     <div id="paypal-button"></div>
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 }
+
 
 @if (User.Identity == null || !User.Identity.IsAuthenticated)
 {

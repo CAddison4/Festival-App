@@ -12,6 +12,7 @@ using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
 using TeamRedInternalProject.ViewModel;
 using TeamRedInternalProject.Utilities;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace TeamRedInternalProject.Controllers
@@ -40,6 +41,7 @@ namespace TeamRedInternalProject.Controllers
             _festivalRepo= new FestivalRepo(db);
             _adminRepo = new AdminRepo(db);
         }
+
 
         /// <summary>
         /// Purchase tickets page. It is a list view of all ticket types for the current festival.
@@ -83,6 +85,7 @@ namespace TeamRedInternalProject.Controllers
             string userEmail = User!.Identity!.Name!;
             Order order = _orderRepo.CreateNewOrder(userEmail, purchaseDetails.PayerEmail);
             int currentFestivalId = _festivalRepo.GetCurrentFestivalId();
+
             _ticketRepo.CreateTickets(order.OrderId, currentFestivalId, purchaseDetails.TicketRequests);
             
             return JsonConvert.SerializeObject(order.OrderId);
@@ -98,6 +101,7 @@ namespace TeamRedInternalProject.Controllers
         {
             Order order = _orderRepo.GetOrderById(id);
             List<Ticket> tickets  = _ticketRepo.GetTicketsByOrder(id);
+
             User user = _userRepo.GetUsersByEmail(User.Identity!.Name!);
             PurchaseConfirmationVM orderConfirmationVM = _orderRepo.CreateOrderConfirmation(order, user, tickets);
 

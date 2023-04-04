@@ -31,8 +31,13 @@ namespace TeamRedInternalProject.Controllers
         /// All data is for current festival
         /// </summary>
         /// <returns>Admin dashboard view</returns>
-        public IActionResult Index()
+        public IActionResult Index(string message="")
         {
+            if(message != "")
+            {
+                ViewData["DeleteErrorMessage"] = message;
+            }
+            
             // Data by type for the table
             List<TicketSalesVM> ticketRevenueVMs = _adminRepo.GetTicketSalesDataByTicketType();
 

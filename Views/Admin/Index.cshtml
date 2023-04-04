@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int totalTicketsPurchased = (int)(ViewData["TotalTicketsPurchased"] ?? 0);
     decimal totalRevenue = (decimal)(ViewData["TotalRevenue"] ?? 0.0);
+    string? errorMessage = ViewData["DeleteErrorMessage"]?.ToString();
 
 }
 
@@ -63,10 +64,18 @@
                         <td>
                             @item.Revenue.ToString("C")
                         </td>
+                        <td>
+                            <a asp-controller="TicketType" asp-action="Delete" asp-route-ticketTypeId="@item.TicketTypeId">Delete</a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+        @if (errorMessage != "")
+        {
+            <p class="text-danger">@errorMessage</p>
+        }
+        
 
         <div class="row">
             <div class="col-12 text-center mt-5">

@@ -15,11 +15,13 @@ namespace TeamRedInternalProject.Controllers
         private readonly ILogger<TicketTypeController> _logger;
         private readonly TicketTypeRepo _ticketTypeRepo;
         private readonly ConcertContext _db;
+        private readonly AdminRepo _adminRepo;
 
         public TicketTypeController(ILogger<TicketTypeController> logger, ConcertContext db)
         {  
             _logger = logger;
             _ticketTypeRepo = new TicketTypeRepo(db);
+            _adminRepo = new AdminRepo(db);
             _db = db;
         }
 
@@ -69,6 +71,25 @@ namespace TeamRedInternalProject.Controllers
             
             
 
+        }
+
+        public IActionResult Delete(int ticketTypeId)
+        {
+            string message = "";
+            List<TicketSalesVM> ticketSalesVMs = _adminRepo.GetTicketSalesDataByTicketType();
+            foreach (TicketSalesVM ticketSalesVM in ticketSalesVMs)
+            {
+                if(ticketSalesVM.TicketTypeId == ticketTypeId && ticketSalesVM.TicketsSold == 0)
+                {
+                    _ticketTypeRepo.DeleteTicketType(ticketTypeId);
+                    message = "";
+                }
+                else
+                {
+                    message = "Cannot delete Ticket Types that have sales.";
+                }
+            }
+            return RedirectToAction("Index", "Admin", new { message });
         }
     }
 }
