@@ -22,19 +22,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.Price)
-            </td>
-            <td>
-                @(item.QtyAvailable != 0 ? "Available" : "SOLD OUT!")
-            </td>
-            @if (User.Identity.IsAuthenticated)
-            {
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketType.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketType.Price)
+                </td>
+                <td>
+                    @(
+                    item.QtyAvailable != 0 ? "Available" : "SOLD OUT!"
+                            )
+                </td>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
                     <td>
                         <input 
                             type="button" 
@@ -59,13 +61,13 @@
                         <span>Amount: </span>
                         <span id="@item.Id-amount" class="amount">0.00</span>
                     </td>
-            }
-        </tr>
-}
+
+                }
+            </tr>
+        }
     </tbody>
 </table>
-
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity != null && User.Identity.IsAuthenticated)
 {
     <div>
         <p id="totalItems">0</p>
@@ -80,7 +82,8 @@
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 }
 
-@if (!User.Identity.IsAuthenticated)
+
+@if (User.Identity == null || !User.Identity.IsAuthenticated)
 {
     <button>
         <a class="nav-link text-dark" href="/Identity/Account/Login">Login to Purchase</a>
