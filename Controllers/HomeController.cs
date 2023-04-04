@@ -22,9 +22,14 @@ namespace TeamRedInternalProject.Controllers
             _festivalRepo = new FestivalRepo();
     }
 
+        /// <summary>
+        /// Get info about the current festival and artists performing at the festival 
+        /// in order to create a home page with relevant data.
+        /// </summary>
+        /// <returns>A home page view featuring the current festival</returns>
         public IActionResult Index()
         {
-            List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
+            List<Artist> artists = _artistRepo.GetArtists(); // get artists at current festival
 
             Festival currentFestival = _db.Festivals.Where(f => f.IsCurrent).First();
 
@@ -33,19 +38,17 @@ namespace TeamRedInternalProject.Controllers
             return View(indexPageVM);
         }
 
-        //list of Artists Performing
+        /// <summary>
+        /// Get a list of artists performing at the current festival to create a list view
+        /// </summary>
+        /// <returns>A list view of all artists performing at the current festival</returns>
         public IActionResult Artists()
         {
-            
-            List<Artist> artists = _artistRepo.GetArtistsAtCurrentFestival();
+            List<Artist> artists = _artistRepo.GetArtists(); // get artists at current festival
             return View(artists);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        // error view 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

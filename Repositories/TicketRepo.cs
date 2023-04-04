@@ -11,9 +11,9 @@ namespace TeamRedInternalProject.Repositories
         private readonly ConcertContext _db;
         private readonly UserRepo _userRepo;
 
-        public TicketRepo()
+        public TicketRepo(ConcertContext db)
         {
-            _db = new();
+            _db = db;
             _userRepo= new UserRepo();
         }
 
