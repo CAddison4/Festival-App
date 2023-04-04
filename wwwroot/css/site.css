@@ -101,6 +101,8 @@ body {
 }
 
 
+
+
 /* HomePage -------------------------------------------------- */
 
 .HomeBody {
@@ -145,18 +147,48 @@ body {
     height: 250px;
     object-fit: cover;
     border-radius: 50%;
-
 }
 
 .row {
     font-size: 25px;
 }
 
+/* Media query for screens with max-width of 768px (mobile or smaller screens) */
+@media (max-width: 768px) {
+    .HomeImgDiv {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .HomeImgDiv article {
+            flex-basis: 100%;
+            margin-bottom: 20px;
+        }
+}
+
+
 #btnHome {
     background-color: #ebbb66;
     padding: 1rem;
     font-size: 20px;
     margin: 20px;
+}
+
+@media (max-width: 890px) {
+    .BannerLogo {
+        width: 600px;
+        height: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .BannerLogo {
+        width: 400px;
+        height: auto;
+    }
+
 }
 
 /* Navbar --------------------------------------------------- */
