@@ -41,7 +41,8 @@
     <input type="hidden" name="Email" value="@user.Email" />
     <div class="form-check form-switch">
         <label class="form-check-label" for="IsAdmin">
-            <input class="form-check-input" type="checkbox" name="IsAdmin" value=true @(user.Admin ? "checked" : "") />
+            <input class="form-check-input" type="checkbox" name="IsAdmin" value=true @(user.Admin ? "checked" : "")
+                    @(User.Identity.Name == user.Email ? "disabled" : "")/>
             Admin
         </label>
         <button type="submit">Save</button>

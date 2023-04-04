@@ -57,6 +57,8 @@ namespace TeamRedInternalProject.Controllers
 
             if (!string.IsNullOrEmpty(email))
             {
+
+
                 if (IsAdmin)
                 {
                     await _userRoleRepo.AddUserRole(email, "Admin");
@@ -65,6 +67,7 @@ namespace TeamRedInternalProject.Controllers
                 
                 if (!IsAdmin)
                 {
+
                     await _userRoleRepo.RemoveUserRole(email, "Admin");
                 }
 
