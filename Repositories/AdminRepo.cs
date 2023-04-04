@@ -16,8 +16,8 @@ namespace TeamRedInternalProject.Repositories
         public AdminRepo(ConcertContext db)
         {
             _db = db;
-            _ticketRepo = new();
-            _ticketTypeRepo = new();
+            _ticketRepo = new(db);
+            _ticketTypeRepo = new(db);
         }
 
         /// <summary>

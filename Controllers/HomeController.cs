@@ -19,7 +19,7 @@ namespace TeamRedInternalProject.Controllers
             _logger = logger;
             _db = db;
             _artistRepo = new ArtistRepo(db);
-            _festivalRepo = new FestivalRepo();
+            _festivalRepo = new FestivalRepo(db);
     }
 
         /// <summary>
