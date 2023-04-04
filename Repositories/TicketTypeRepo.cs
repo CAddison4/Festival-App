@@ -6,9 +6,9 @@ namespace TeamRedInternalProject.Repositories
     public class TicketTypeRepo
     {
         private readonly ConcertContext _db;
-        public TicketTypeRepo()
+        public TicketTypeRepo(ConcertContext db)
         {
-            _db = new();
+            _db = db;
         }
 
         /// <summary>

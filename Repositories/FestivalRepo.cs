@@ -6,9 +6,9 @@ namespace TeamRedInternalProject.Repositories
     {
         private readonly ConcertContext _db;
 
-        public FestivalRepo()
+        public FestivalRepo(ConcertContext db)
         {
-            _db = new();
+            _db = db;
         }
         public int GetCurrentFestivalId() 
         {

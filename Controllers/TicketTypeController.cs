@@ -19,7 +19,7 @@ namespace TeamRedInternalProject.Controllers
         public TicketTypeController(ILogger<TicketTypeController> logger, ConcertContext db)
         {  
             _logger = logger;
-            _ticketTypeRepo = new TicketTypeRepo();
+            _ticketTypeRepo = new TicketTypeRepo(db);
             _db = db;
         }
 
@@ -28,11 +28,11 @@ namespace TeamRedInternalProject.Controllers
         /// Grabs the ticket types
         /// </summary>
         /// <returns>ActionResult Index View</returns>
-            public ActionResult Index()
-        {
-            List<TicketType> result = _ticketTypeRepo.GetTicketTypes();
-            return View(result);
-        }
+        //    public ActionResult Index()
+        //{
+        //    List<TicketType> result = _ticketTypeRepo.GetTicketTypes();
+        //    return View(result);
+        //}
  
         /// <summary>
         /// Creates a new ticket type for both the TicketType table, grabs the Festivals table and the FestivalsTicketType
@@ -62,7 +62,7 @@ namespace TeamRedInternalProject.Controllers
 
             if (result == "Success")
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Admin", new {area = ""});
             }
 
             return View(model);
