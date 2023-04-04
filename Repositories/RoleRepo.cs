@@ -17,6 +17,11 @@ namespace TeamRedInternalProject.Repositories
             _roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
         }
+
+        /// <summary>
+        /// Get all AspRoles in the db
+        /// </summary>
+        /// <returns>list of RoleVM objects</returns>
         public List<RoleVM> GetAllRoles()
         {
 
@@ -34,6 +39,11 @@ namespace TeamRedInternalProject.Repositories
             return roleList;
         }
 
+        /// <summary>
+        /// Create a new AspRole
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <returns>True when created</returns>
         public async Task<bool> CreateRole(string roleName)
         {
             await _roleManager.CreateAsync(new IdentityRole
@@ -46,6 +56,7 @@ namespace TeamRedInternalProject.Repositories
             return true;
         }
 
+        // Seed AspNet Roles with option to 
         public async Task<bool> CreateInitialRoles()
         {
             string roleName = "Admin";

@@ -139,7 +139,7 @@ paypal.Button.render({
 
             $.ajax({
                 type: "POST",
-                url: "/User/PaySuccess",
+                url: "/Ticket/PaySuccess",
                 data: JSON.stringify({
                     PayerEmail: payment.payer.payer_info.email
                     , TicketRequests: ticketRequests
@@ -147,7 +147,7 @@ paypal.Button.render({
                 contentType: "application/json",
                 success: function (response) {
                     console.log("success", response);
-                    window.location.href = "/User/PurchaseConfirmation?id=" + response;
+                    window.location.href = "/Ticket/PurchaseConfirmation?id=" + response;
                 },
                 error: function (response) {
                     console.log("failure", response);

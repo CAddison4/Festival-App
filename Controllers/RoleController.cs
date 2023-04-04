@@ -14,12 +14,12 @@ namespace TeamRedInternalProject.Controllers
     [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<TicketController> _logger;
         private readonly UserRepo _userRepo;
         private readonly UserRoleRepo _userRoleRepo;
         private IServiceProvider _serviceProvider;
         private readonly ConcertContext _db;
-        public RoleController(ILogger<UserController> logger, ConcertContext db, IServiceProvider serviceProvider)
+        public RoleController(ILogger<TicketController> logger, ConcertContext db, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _serviceProvider= serviceProvider;
