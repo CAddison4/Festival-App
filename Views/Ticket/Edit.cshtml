@@ -1,16 +1,17 @@
 ﻿@model TeamRedInternalProject.Models.User
 
 @{
-    ViewData["Title"] = "EditProfile";
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>EditProfile</h1>
+<h1>Edit</h1>
 
 <h4>User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="EditProfile">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Email" />
             <div class="form-group">
@@ -23,7 +24,6 @@
                 <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
-            <!-- authorize this to only admins-->
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Admin" /> @Html.DisplayNameFor(model => model.Admin)
@@ -37,7 +37,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="MyTickets">Back to List</a>
 </div>
 
 @section Scripts {

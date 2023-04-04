@@ -7,32 +7,21 @@ namespace TeamRedInternalProject.Repositories
     public class OrderRepo
     {
         private readonly ConcertContext _db;
-        private readonly UserRepo _userRepo;
 
         public OrderRepo(ConcertContext db)
         {
             _db = db;
-            _userRepo = new UserRepo();
-        }
-        public List<Order> GetOrdersByEmail(string email)
-        {
-            List<Order>? orders = _db.Orders.Where(o => o.Email == email).ToList();
-
-            if (orders == null)
-            {
-                throw (new Exception("Cannot find orders"));
-            }
-            return orders;
         }
 
         /// <summary>
-        /// Create an order object using the order id.
+        /// Get the order object with the given order id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">order id</param>
         /// <returns>Order</returns>
         public Order GetOrderById(int id)
         {
-            Order order = _db.Orders.Where(o => o.OrderId == id).FirstOrDefault();
+            Order order = _db.Orders.Find(id)!; 
+            // only called in confirmation after an order is created, so we know the order exists
 
             return order;
         }
@@ -90,7 +79,7 @@ namespace TeamRedInternalProject.Repositories
 
             foreach (Ticket ticket in tickets)
             {
-                TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticket.TicketTypeId).FirstOrDefault();
+                TicketType ticketType = _db.TicketTypes.Where(tt => tt.TicketTypeId == ticket.TicketTypeId).First();
                 ticketTypeName = ticketType.Type;
                 ticketTypes.Add(ticketTypeName);
             }

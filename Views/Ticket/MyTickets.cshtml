@@ -7,7 +7,7 @@
 }
 
 <h1>My Tickets</h1>
-<form asp-action="Index" asp-controller="User" method="get">
+<form asp-action="MyTickets" asp-controller="Ticket" method="get">
     <div class="form-actions no-color">
         <p>
             <div class="form-group" style="display: inline-block">
@@ -17,7 +17,7 @@
             <div class="form-group" style="display: inline-block">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
-            <a asp-action="Index" asp-controller="User" id="backToList">Back to Full List</a>
+            <a asp-action="MyTickets" asp-controller="Ticket" id="backToList">Back to Full List</a>
         </p>
     </div>
 </form>
@@ -92,14 +92,14 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-<a asp-action="Index"
-   asp-controller="User"
+<a asp-action="MyTickets"
+   asp-controller="Ticket"
    asp-route-page="@(Model.PageIndex - 1)"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
-<a asp-action="Index"
-   asp-controller="User"
+<a asp-action="MyTickets"
+   asp-controller="Ticket"
    asp-route-page="@(Model.PageIndex + 1)"
    class="btn btn-default @nextDisabled">
     Next
