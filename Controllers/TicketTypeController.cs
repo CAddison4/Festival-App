@@ -19,7 +19,7 @@ namespace TeamRedInternalProject.Controllers
         public TicketTypeController(ILogger<TicketTypeController> logger, ConcertContext db)
         {  
             _logger = logger;
-            _ticketTypeRepo = new TicketTypeRepo();
+            _ticketTypeRepo = new TicketTypeRepo(db);
             _db = db;
         }
 

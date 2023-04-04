@@ -27,17 +27,17 @@ namespace TeamRedInternalProject.Controllers
         private readonly AdminRepo _adminRepo;
         private readonly IWebHostEnvironment _env;
         
-        public UserController(ILogger<UserController> logger, IWebHostEnvironment env)
+        public UserController(ILogger<UserController> logger, IWebHostEnvironment env, ConcertContext db)
         {
             _env = env;
-            _db = new();
+            _db = db;
             _logger = logger;
             _userRepo = new UserRepo();
-            _ticketRepo= new TicketRepo();
-            _ticketTypeRepo = new TicketTypeRepo();
-            _orderRepo = new OrderRepo();
-            _festivalRepo= new FestivalRepo();
-            _adminRepo = new AdminRepo(_db);
+            _ticketRepo= new TicketRepo(db);
+            _ticketTypeRepo = new TicketTypeRepo(db);
+            _orderRepo = new OrderRepo(db);
+            _festivalRepo= new FestivalRepo(db);
+            _adminRepo = new AdminRepo(db);
         }
 
         // Display all tickets according to user
