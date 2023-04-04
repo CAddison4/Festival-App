@@ -37,17 +37,17 @@
             <tr>
                 <td>@user.Email</td>
                 <td>
-                    <form asp-action="Index" asp-controller="Role" method="post">
-                        <input type="hidden" name="Email" value="@user.Email" />
-                        <div class="form-check form-switch">
-                            <label class="form-check-label" for="Role">
-                            <input class="form-check-input" type="checkbox" name="Role" value="Admin" @(user.Admin == true ? "checked" : "") />
-                            Admin
-                        </label>
-                            <button type="submit">Save</button>
-                         </div>
+<form asp-action="Index" asp-controller="Role" method="post">
+    <input type="hidden" name="Email" value="@user.Email" />
+    <div class="form-check form-switch">
+        <label class="form-check-label" for="IsAdmin">
+            <input class="form-check-input" type="checkbox" name="IsAdmin" value=true @(user.Admin ? "checked" : "") />
+            Admin
+        </label>
+        <button type="submit">Save</button>
+    </div>
+</form>
 
-                    </form>
                 </td>
             </tr>
         }

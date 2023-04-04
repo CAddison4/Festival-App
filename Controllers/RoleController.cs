@@ -8,6 +8,8 @@ using TeamRedInternalProject.ViewModel;
 using TeamRedInternalProject.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TeamRedInternalProject.Controllers
 {
@@ -36,26 +38,36 @@ namespace TeamRedInternalProject.Controllers
             List<User> searchedUsers = _db.Users.Where(u => u.Email.Contains(searchString)).ToList();
             if (String.IsNullOrEmpty(searchString))
             {
-                page = 1;
                users = users.Where(u => u.Admin == true).ToList();
                 return View(PaginatedList<User>.Create(users, page ?? 1, pageSize)); 
             }
             else
             {
-                page = 1;
+
                 return View(PaginatedList<User>.Create(searchedUsers, page ?? 1, pageSize));
             }
         }
 
+        //This is erroing
+
         [HttpPost]
-        public async Task<IActionResult> Index(string email, string role)
+        public async Task<IActionResult> Index(string email, bool IsAdmin)
         {
             string message = string.Empty;
 
-            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(role))
+            if (!string.IsNullOrEmpty(email))
             {
-                await _userRoleRepo.AddUserRole(email, role);
-                _userRoleRepo.UpdateUser(email);
+                if (IsAdmin)
+                {
+                    await _userRoleRepo.AddUserRole(email, "Admin");
+                    _userRoleRepo.UpdateUser(email);
+                } 
+                
+                if (!IsAdmin)
+                {
+                    await _userRoleRepo.RemoveUserRole(email, "Admin");
+                }
+
             }
 
             try
@@ -135,5 +147,6 @@ namespace TeamRedInternalProject.Controllers
                 return View(message);
             }
         }
+
     }
 }

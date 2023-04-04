@@ -68,12 +68,18 @@ namespace TeamRedInternalProject.Repositories
         // Remove role from a user.
         public async Task<bool> RemoveUserRole(string email, string roleName)
         {
+            UserRepo userRepo = new UserRepo();
             var user = await _userManager.FindByEmailAsync(email);
+            User adminUser = userRepo.GetUsersByEmail(email);
             if (user != null)
             {
                 var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+                adminUser.Admin = false;
+                _db.Update(adminUser);
+                _db.SaveChanges();
                 if (result.Succeeded)
                 {
+
                     return true;
                 }
             }
