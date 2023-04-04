@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using TeamRedInternalProject.Data.Services;
 using TeamRedInternalProject.Models;
 using TeamRedInternalProject.Repositories;
+using static TeamRedInternalProject.Services.ReCAPTCHA;
 
 namespace TeamRedInternalProject.Areas.Identity.Pages.Account
 {
@@ -34,12 +35,14 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly UserRepo _userRepo;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
+            IConfiguration configuration,
             IEmailSender emailSender,
             IEmailService emailService)
         {
@@ -51,6 +54,7 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _userRepo = new UserRepo();
             _emailService = emailService;
+            _configuration= configuration;
         }
 
         /// <summary>
@@ -120,12 +124,25 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ViewData["SiteKey"] = _configuration["Recaptcha:SiteKey"];
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            string captchaResponse = Request.Form["g-Recaptcha-Response"];
+            string secret = _configuration["Recaptcha:SecretKey"];
+            ReCaptchaValidationResult resultCaptcha =
+            ReCaptchaValidator.IsValid(secret, captchaResponse);
+            // Invalidate the form if the captcha is invalid.
+            if (!resultCaptcha.Success)
+            {
+                ModelState.AddModelError(string.Empty,
+                "The ReCaptcha is invalid.");
+            }
+
+
             if (ModelState.IsValid)
             {
 
