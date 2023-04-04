@@ -35,16 +35,17 @@
             </div>
         </div>
 
-        <div class="HomeImgDiv row mt-5 p-3">
-            @foreach (var item in Model.Artists.Take(3))
-            {
-                <article class="col-4">
-                    <img src="~/images/@item.ImgPath" class="img-fluid circle-img" alt="@item.ArtistName">
-                    <h2 class="pt-4 text-white fs-2">@item.ArtistName</h2>
-                    <p class="text-white fs-5">@item.ArtistBio</p>
-                </article>
-            }
-        </div>
+<div class="HomeImgDiv row mt-5 p-3">
+    @foreach (var item in Model.Artists.Take(3))
+    {
+        <article class="col-4">
+            <img src="~/images/@item.ImgPath" class="img-fluid circle-img" alt="@item.ArtistName">
+            <h2 class="pt-4 text-white fs-2">@item.ArtistName</h2>
+            <p class="text-white fs-5">@item.ArtistBio</p>
+        </article>
+    }
+</div>
+
     </div>
 
 </body>
