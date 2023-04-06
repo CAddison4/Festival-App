@@ -2,6 +2,21 @@
 
 @{
     ViewData["Title"] = "PurchaseTickets";
+
+    string TicketStatus (int quantityAvailable)
+    {
+        if (quantityAvailable == 0)
+        {
+           return "SOLD OUT!";
+        }
+        if (quantityAvailable <= 10)
+        {
+           return  $"ONLY {quantityAvailable} LEFT!";
+        }
+
+        return "Available";
+                 
+    }
 }
 
 <h1>Buy Tickets</h1>
@@ -32,9 +47,7 @@
                     @Html.DisplayFor(modelItem => item.TicketType.Price)
                 </td>
                 <td>
-                    @(
-                    item.QtyAvailable != 0 ? "Available" : "SOLD OUT!"
-                            )
+                        @TicketStatus(item.QtyAvailable)
                 </td>
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
@@ -85,7 +98,7 @@
                 <div class="card bg-transparent">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <h3 class="card-title mb-0">Total:</h3>
-                        <span class="card-text d-flex align-items-center"><h3 class="mb-0">$</h3><h3 id="totalAmount" class="totalAmount mb-0">0.00</h3></span>
+                        <div class="card-text d-flex align-items-center"><h3 class="mb-0">$</h3><h3 id="totalAmount" class="totalAmount mb-0">0.00</h3></div>
                     </div>
                 </div>
             </div>
@@ -111,9 +124,29 @@
 
 @if (User.Identity == null || !User.Identity.IsAuthenticated)
 {
-    <button>
+@*    <button>
         <a class="nav-link text-dark" href="/Identity/Account/Login">Login to Purchase</a>
+    </button>*@
+    <button class="nav-link btn btn-primary bg-transparent btn-hover"
+            type="button"
+            onclick="window.location.href='/Identity/Account/Login'">
+        Login to Purchase
     </button>
 }
 
 <script src="~/js/site.js"></script>
+<style>
+    .btn-hover:hover {
+    background-color: orangered;
+    color: orangered;
+/*    text-shadow: 0px 2px 4px #b5739d;*/
+    border: 1px solid orangered;
+    box-shadow: 0px 2px 4px #b5739d;
+}
+
+.btn-hover {
+    color: white;
+    border: 1px solid white;
+    /*transition: background-color 0.25s, color 0.25s, text-shadow 0.25s;*/
+}
+</style>
