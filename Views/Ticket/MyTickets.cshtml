@@ -31,10 +31,7 @@
     <thead>
         <tr>
             <th>
-                TicketId
-            </th>
-            <th>
-                Ticket Type
+                Ticket
             </th>
             <th>
                 Price
@@ -55,9 +52,6 @@
     <tbody style="border:transparent">
 @foreach (var item in Model) {
             <tr style="border:transparent">
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketId)
-            </td>
             <td>
                     <a asp-action="DownloadTicket" class="download-tickets" asp-route-ticketId="@item.TicketId">@Html.DisplayFor(modelItem => item.TicketType)</a>
             </td>
