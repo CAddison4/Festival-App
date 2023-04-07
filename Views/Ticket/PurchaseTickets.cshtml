@@ -51,30 +51,34 @@
                 </td>
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
-                    <td>
-                        <input 
-                            type="button" 
-                            value="Add To Cart" 
-                            id="@item.Id-add" 
-                            data-type="@item.TicketType.Type" 
-                            data-price="@item.TicketType.Price"
-                            data-qty="@item.QtyAvailable"
-                            onclick=updateShoppingCart(event)
+                    <td class="d-flex flex-wrap purchase-area">
+                        <div class="d-flex gap-2">
+                           <input 
+                                type="button" 
+                                value="Add To Cart" 
+                                id="@item.Id-add" 
+                                data-type="@item.TicketType.Type" 
+                                data-price="@item.TicketType.Price"
+                                data-qty="@item.QtyAvailable"
+                                onclick=updateShoppingCart(event)
+                                class="nav-link btn bg-transparent btn-hover mt-0">
+                            <input 
+                                type="button" 
+                                value="Remove From Cart" 
+                                id="@item.Id-remove" 
+                                data-type="@item.TicketType.Type" 
+                                data-price="@item.TicketType.Price" 
+                                data-qty="@item.QtyAvailable"
+                                onclick=updateShoppingCart(event)
+                                class="nav-link btn bg-transparent btn-hover">
+                        </div>
+                        <div class="d-flex gap-2">
+                            <span>Quantity:</span>
+                            <span id="@item.Id-quantity" class="quantity">0</span>
+                            <span>Amount: </span>
+                            <div>$<span id="@item.Id-amount" class="amount">0.00</span></div>
+                        </div>
 
-                        >
-                        <input 
-                            type="button" 
-                            value="Remove From Cart" 
-                            id="@item.Id-remove" 
-                            data-type="@item.TicketType.Type" 
-                            data-price="@item.TicketType.Price" 
-                            data-qty="@item.QtyAvailable"
-                            onclick=updateShoppingCart(event)
-                        >
-                        <span>Quantity:</span>
-                        <span id="@item.Id-quantity" class="quantity">0</span>
-                        <span>Amount: </span>
-                        <span id="@item.Id-amount" class="amount">0.00</span>
                     </td>
 
                 }
@@ -127,26 +131,57 @@
 @*    <button>
         <a class="nav-link text-dark" href="/Identity/Account/Login">Login to Purchase</a>
     </button>*@
-    <button class="nav-link btn btn-primary bg-transparent btn-hover"
+    <div class="d-flex justify-content-center">
+        <a type="button" class="nav-link btn btn-primary login-hover" href="/Identity/Account/Login">Login to Purchase</a>
+    </div>
+@*    <button class="nav-link btn btn-primary bg-transparent btn-hover"
             type="button"
             onclick="window.location.href='/Identity/Account/Login'">
         Login to Purchase
     </button>
+
+    <div class="d-flex justify-content-center">
+        <a type="button" class="nav-link btn btn-primary btn-hover" asp-action="PurchaseTickets">Purchase Tickets Now</a>
+    </div>*@
 }
 
 <script src="~/js/site.js"></script>
 <style>
+    @@media (min-width: 767px) {
+        .purchase-area {
+            gap: 25px;
+        }
+}
     .btn-hover:hover {
     background-color: orangered;
     color: orangered;
 /*    text-shadow: 0px 2px 4px #b5739d;*/
-    border: 1px solid orangered;
-    box-shadow: 0px 2px 4px #b5739d;
+/*    border: 1px solid orangered;*/
+    text-shadow: 0px 2px 4px #b5739d;
+    
 }
 
 .btn-hover {
-    color: white;
-    border: 1px solid white;
+    color: black;
+    border: none;
+/*    border: 1px solid white;*/
     /*transition: background-color 0.25s, color 0.25s, text-shadow 0.25s;*/
+        padding: 0;
 }
+    .login-hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        color: orangered;
+        border: 1px solid white;
+        /*transition: background-color 0.25s, color 0.25s, text-shadow 0.25s;*/
+        margin-bottom: 20px;
+        width: 200px;
+    }
+
+    .login-hover:hover {
+        background-color: orangered;
+        color: white;
+        /*    text-shadow: 0px 2px 4px #b5739d;*/
+        border: 1px solid orangered;
+        box-shadow: 0px 2px 4px #b5739d;
+    }
 </style>
