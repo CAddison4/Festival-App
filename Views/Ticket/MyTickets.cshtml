@@ -7,6 +7,7 @@
 }
 
 <h1>My Tickets</h1>
+
 <form asp-action="MyTickets" asp-controller="Ticket" method="get">
     <div class="form-actions no-color">
         <p>
@@ -21,6 +22,10 @@
         </p>
     </div>
 </form>
+<div class="d-flex justify-content-center p-4 pb-3 mb-0">
+    <h3>Click ticket to download</h3>
+</div>
+
 
 <table class="table">
     <thead>
@@ -41,22 +46,20 @@
                 Date
             </th>
             <th>
-                First Name
+                Name
             </th>
-            <th>
-                LastName
-            </th>
+
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="border:transparent">
 @foreach (var item in Model) {
-        <tr>
+            <tr style="border:transparent">
             <td>
                 @Html.DisplayFor(modelItem => item.TicketId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TicketType)
+                    <a asp-action="DownloadTicket" class="download-tickets" asp-route-ticketId="@item.TicketId">@Html.DisplayFor(modelItem => item.TicketType)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
@@ -69,13 +72,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
+@*
             <td>
                 <a asp-action="DownloadTicket" asp-route-ticketId="@item.TicketId">Download As PDF</a>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>
@@ -92,6 +94,7 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
+
 <a asp-action="MyTickets"
    asp-controller="Ticket"
    asp-route-page="@(Model.PageIndex - 1)"
@@ -104,5 +107,40 @@
    class="btn btn-default @nextDisabled">
     Next
 </a>
-<a asp-action="PurchaseTickets">Purchase Tickets Now</a>
+<div class="d-flex justify-content-center">
+    <a type="button" class="nav-link btn btn-primary btn-hover" asp-action="PurchaseTickets">Purchase Tickets Now</a>
+</div>
+
+
 @ViewBag.Message
+
+<style>
+    .download-tickets {
+        color: black;
+    }
+
+    .download-tickets:hover{
+/*    background-color: orangered;*/
+    color: orangered;
+    text-shadow: 0px 2px 4px #b5739d;
+/*    border: 1px solid orangered;*/
+/*    box-shadow: 0px 2px 4px #b5739d;*/
+    }
+    .btn-hover:hover {
+    background-color: orangered;
+    color: white;
+/*    text-shadow: 0px 2px 4px #b5739d;*/
+    border: 1px solid orangered;
+    box-shadow: 0px 2px 4px #b5739d;
+}
+
+.btn-hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        color: orangered;
+    
+    border: 1px solid white;
+    /*transition: background-color 0.25s, color 0.25s, text-shadow 0.25s;*/
+    margin-bottom: 20px;
+    width: 200px;
+}
+</style>
