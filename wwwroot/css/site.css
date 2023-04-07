@@ -1,9 +1,4 @@
-/*Layout
-    -------------------------------------------------------------------
-    font-family: 'Bebas Neue', cursive;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-family: 'Work Sans', sans-serif;
-*/
+
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed&family=Work+Sans:ital,wght@0,500;0,600;1,300;1,500;1,600&display=swap');
 
 html {
@@ -30,38 +25,8 @@ body {
     background-repeat: no-repeat;
 }
 
-/*cards
-    -----------------------------------------------------------------------
-*/
 
-.card-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    max-width: 55rem;
-    margin: 0 auto;
-}
-
-.main-card {
-    border: 1px solid white;
-    max-width: 30rem;
-    padding: 1.5rem;
-    margin: 1rem;
-    background-color: #e3d1ed;
-}
-
-.main-card h2 {
-    padding-top: 1rem;
-    text-align: center;
-}
-
-.admin-card {
-    color: red;
-}
-
-
-
-/*forms -----------------------------------------------------------------------
-*/
+/*forms ----------------------------------------------------------------------- */
 .form-h1 {
     text-align: center;
 }
@@ -118,65 +83,6 @@ body {
     object-fit: fill;
 }
 
-.homeBannerDiv {
-    color: white;
-    padding-top: 90px;
-    padding-bottom: 100px;
-}
-
-.homeBannerDiv h4{
-    font-size:40px;
-    padding-bottom: 40px;
-}
-
-.BannerDate {
-    padding-top: 70px;
-}
-
-.homeBannerDiv p {
-    font-size: 40px;
-}
-
-
-.HomeImgDiv {
-    margin-top: 100px !important;
-}
-
-.circle-img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-.row {
-    font-size: 25px;
-}
-
-/* Media query for screens with max-width of 768px for the artists on the homepage */
-@media (max-width: 768px) {
-    .HomeImgDiv {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-    }
-
-        .HomeImgDiv article {
-            flex-basis: 100%;
-            margin-bottom: 20px;
-        }
-}
-
-
-#btnHome {
-    background-color: #ebbb66;
-    padding: 1rem;
-    font-size: 20px;
-    margin: 20px;
-}
-
-
 /* media query for the logo at the top of the index page in the center of the screen */
 @media (max-width: 890px) {
     .BannerLogo {
@@ -190,8 +96,67 @@ body {
         width: 350px;
         height: auto;
     }
-
 }
+
+    .homeBannerDiv {
+        color: white;
+        padding-top: 90px;
+        padding-bottom: 100px;
+    }
+
+        .homeBannerDiv h4 {
+            font-size: 40px;
+            padding-bottom: 40px;
+        }
+
+    .BannerDate {
+        padding-top: 70px;
+    }
+
+    .homeBannerDiv p {
+        font-size: 40px;
+    }
+
+
+    .HomeImgDiv {
+        margin-top: 100px !important;
+    }
+
+    /* Media query for screens with max-width of 768px for the artists on the homepage */
+    @media (max-width: 768px) {
+        .HomeImgDiv {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .HomeImgDiv article {
+                flex-basis: 100%;
+                margin-bottom: 20px;
+            }
+    }
+
+    .circle-img {
+        width: 250px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .row {
+        font-size: 25px;
+    }
+
+
+    #btnHome {
+        background-color: #ebbb66;
+        padding: 1rem;
+        font-size: 20px;
+        margin: 20px;
+    }
+
+
 
 /* Navbar --------------------------------------------------- */
 header nav.navbar {
@@ -267,7 +232,33 @@ header nav.navbar .navbar-toggler-icon {
     margin-right: 10px;
 }
 
-/* ------------------------------------ User page */
+/*cards for artists  ----------------------------------------------------------------------- */
+
+.card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 55rem;
+    margin: 0 auto;
+}
+
+.main-card {
+    border: 1px solid white;
+    max-width: 30rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    background-color: #e3d1ed;
+}
+
+    .main-card h2 {
+        padding-top: 1rem;
+        text-align: center;
+    }
+
+.admin-card {
+    color: red;
+}
+
+/* User page  ------------------------------------------------------------------  */
 /* Style the form */
 .form-actions {
     display: flex;
