@@ -23,14 +23,14 @@
             </button>
             <div class="navbar-collapse collapse d-m-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
+                        <li class="nav-item d-flex justify-content-start">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
+                        <li class="nav-item d-flex justify-content-start">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Artists">Artist Line-up</a>
                     </li>
 
-                    <li class="nav-item">
+                        <li class="nav-item d-flex justify-content-start">
                         @if (User?.Identity?.Name == null)
                         {
                             <a class="nav-link text-dark" asp-area="" asp-controller="Ticket" asp-action="PurchaseTickets">Tickets</a>
@@ -41,7 +41,7 @@
                     </li>
                     @if (User.IsInRole("Admin"))
                     {
-                     <li class="nav-item">
+                            <li class="nav-item d-flex justify-content-start">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
                      </li>
                         }
