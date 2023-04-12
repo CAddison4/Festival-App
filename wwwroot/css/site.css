@@ -161,6 +161,10 @@ body {
         margin: 20px;
     }
 
+        #btnHome:hover {
+            background-color: #e29f24;
+        }
+
 
 
 /* Navbar --------------------------------------------------- */
