@@ -7,13 +7,14 @@ const ticketRequests = [];
 const qtyAvailableById = [];
 
 function updateShoppingCart(event) {
-    var clickedId = event.target.id;
+    var clickedId = event.currentTarget.id;
+    console.log(clickedId);
     var elementIdSplit = clickedId.split('-');
     var id = elementIdSplit[0]; // id of the TicketOptionVM item
     var action = elementIdSplit[1]; // add or remove
-    var ticketType = event.target.dataset.type;
-    var ticketPrice = event.target.dataset.price;
-    const qty = event.target.dataset.qty * 1; // initial qty available for this ticket type at the time of clicking the button
+    var ticketType = event.currentTarget.dataset.type;
+    var ticketPrice = event.currentTarget.dataset.price;
+    const qty = event.currentTarget.dataset.qty * 1; // initial qty available for this ticket type at the time of clicking the button
     const index = qtyAvailableById.findIndex(obj => obj.id === id);
     if (index === -1) {
         qtyAvailableById.push({ id, qty });

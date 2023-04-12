@@ -52,25 +52,29 @@
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
                     <td class="d-flex flex-wrap purchase-area">
-                        <div class="d-flex gap-2">
-                           <input 
-                                type="button" 
-                                value="Add To Cart" 
+                        <div class="d-flex gap-2 align-items-center" style="width: 60px; height: 30px; position: relative;">
+                           <button
                                 id="@item.Id-add" 
                                 data-type="@item.TicketType.Type" 
                                 data-price="@item.TicketType.Price"
                                 data-qty="@item.QtyAvailable"
                                 onclick=updateShoppingCart(event)
-                                class="nav-link btn bg-transparent btn-hover mt-0">
-                            <input 
-                                type="button" 
-                                value="Remove From Cart" 
+                                class="nav-link btn bg-transparent btn-hover"
+                                style="position: absolute; top: -8px;"
+                           >
+                                <i class="bi bi-bag-plus" style="font-size: 20px;"></i>
+                            </button>
+                            <button 
                                 id="@item.Id-remove" 
                                 data-type="@item.TicketType.Type" 
                                 data-price="@item.TicketType.Price" 
                                 data-qty="@item.QtyAvailable"
                                 onclick=updateShoppingCart(event)
-                                class="nav-link btn bg-transparent btn-hover">
+                                class="nav-link btn bg-transparent btn-hover"
+                                style="position: absolute; top: -8px; left: 30px;"
+                            >
+                                <i class="bi bi-bag-x" style="font-size: 20px;"></i>
+                            </button>
                         </div>
                         <div class="d-flex gap-2">
                             <span>Quantity:</span>
@@ -167,6 +171,7 @@
 /*    border: 1px solid white;*/
     /*transition: background-color 0.25s, color 0.25s, text-shadow 0.25s;*/
         padding: 0;
+        margin: 0;
 }
     .login-hover {
         background-color: rgba(255, 255, 255, 0.5);
@@ -184,4 +189,5 @@
         border: 1px solid orangered;
         box-shadow: 0px 2px 4px #b5739d;
     }
+
 </style>
