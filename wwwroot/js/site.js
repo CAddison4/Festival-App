@@ -152,6 +152,8 @@ paypal.Button.render({
                 },
                 error: function (response) {
                     console.log("failure", response);
+                    // TODO: create an error view to handle failed purchase, rather than raw response
+                    window.location.href = "/Ticket/MyTickets?message=" + "Error purchasing tickets. Please contact admin for assistance.";
                 }
             });
         })

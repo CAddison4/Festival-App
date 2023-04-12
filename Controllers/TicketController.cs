@@ -116,8 +116,12 @@ namespace TeamRedInternalProject.Controllers
         /// <param name="page">selected page</param>
         /// <returns>List view of tickets for the logged in user</returns>
         [Authorize] // only allow logged in users to see this view
-        public IActionResult MyTickets(string searchString, int? page)
-        {
+        public IActionResult MyTickets(string searchString, int? page, string? message)
+        {   
+            if (message != null)
+            {
+                ViewBag.Message = message;
+            }
             string email = User.Identity!.Name!;
             List<TicketVM> ticketList = _ticketRepo.GetUserTicketVMs(email);
             int pageSize = 6;
