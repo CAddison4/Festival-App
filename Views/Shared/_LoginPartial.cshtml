@@ -9,21 +9,21 @@
     @if (SignInManager.IsSignedIn(User))
 
     {
-        <li class="nav-item">
+        <li class="nav-item d-flex justify-content-start">
             <a class="nav-link user-email text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Welcome, @HttpContextAccessor.HttpContext.Request.Cookies["FirstName"]!</a>
         </li>
         <li class="nav-item">
-            <form class="form-inline d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <form class="form-inline d-flex justify-content-start" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button  type="submit" class="nav-link btn">Logout</button>
             </form>
         </li>
     }
     else
     {
-        <li class="nav-item">
+        <li class="nav-item d-flex justify-content-start">
             <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-flex justify-content-start">
             <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
