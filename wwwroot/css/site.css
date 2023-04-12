@@ -54,6 +54,11 @@ body {
     margin-bottom: 1rem;
 }
 
+.form-floating {
+    font-size: 16px;
+}
+
+
 
 .login-links {
     width: 400px;
@@ -156,6 +161,10 @@ body {
         margin: 20px;
     }
 
+        #btnHome:hover {
+            background-color: #e29f24;
+        }
+
 
 
 /* Navbar --------------------------------------------------- */
@@ -210,6 +219,8 @@ header nav.navbar .navbar-toggler-icon {
     header nav.navbar .navbar-collapse .nav-item .nav-link.disabled {
         color: #a680b8 !important;
     }
+
+
 
 
 
