@@ -59,6 +59,6 @@ INSERT INTO AspNetUsers VALUES(
 INSERT INTO AspNetRoles VALUES('Admin', 'Admin', 'ADMIN', NULL);
 
 /* Seed the AspNetUserRoles bridge table to assign the admin identity role to the default admin identity user */
-INSERT INTO AspNetUserRole VALUES('f903e641-5e27-4eb9-bd68-dbf111815b11', 'Admin');
+INSERT INTO AspNetUserRoles VALUES('f903e641-5e27-4eb9-bd68-dbf111815b11', 'Admin');
 
 COMMIT;
