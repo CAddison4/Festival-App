@@ -1,89 +1,12 @@
-﻿/* Before running, initialize a Concert database	*/
-/* This script file creates the following tables:	*/
-/* User, Order, Ticket, Festival, Artist,	*/
-/* FestivalArtists, TicketType, FestivalTicketType	*/
-/* and loads the default data rows			*/
+﻿/* Seed tables */
+/* Creates one default admin user 'admin@home.com' with password 'P@ssw0rd!' */
+/* Creates dummy data for one festival */
 
 BEGIN TRANSACTION;
 
-/* Drop tables, children first, then parents */
-DROP TABLE IF EXISTS Ticket;
-DROP TABLE IF EXISTS FestivalTicketType;
-DROP TABLE IF EXISTS TicketType;
-DROP TABLE IF EXISTS CurrentFestival;
-DROP TABLE IF EXISTS FestivalArtist;
-DROP TABLE IF EXISTS Artist;
-DROP TABLE IF EXISTS Festival;
-DROP TABLE IF EXISTS [Order];
-DROP TABLE IF EXISTS [User];
-
-/* Create tables, parents first, then children */
-CREATE TABLE [User] (
-	email			VARCHAR(255)	PRIMARY KEY,
-	lastName		VARCHAR(255)	NOT NULL,
-	firstName		VARCHAR(255)	NOT NULL,
-	[admin]			BIT	DEFAULT 0	NOT NULL
-);
-
-CREATE TABLE [Order] (
-	orderID			INT IDENTITY	PRIMARY KEY,
-	orderDate		DATE			NOT NULL	DEFAULT  CAST( GETDATE() AS DATE ),
-	email			VARCHAR(255)	NOT NULL,
-	payerEmail		VARCHAR(255)	NOT NULL,
-	FOREIGN KEY (email)				REFERENCES [User](email)
-);
-
-CREATE TABLE Festival (
-	festivalID		INT IDENTITY	PRIMARY KEY,
-	[date]			DATE			NOT NULL,
-	[location]		VARCHAR(255)	NOT NULL,
-	isCurrent		BIT				NOT NULL
-);
-
-CREATE TABLE Artist (
-	artistID		INT IDENTITY	PRIMARY KEY,
-	artistName		VARCHAR(255)	NOT NULL,
-	artistBio		VARCHAR(4095),
-	imgPath			VARCHAR(255)
-);
-
-CREATE TABLE FestivalArtist (
-	festivalID		INT				NOT NULL,
-	artistID		INT				NOT NULL,
-	FOREIGN KEY (festivalID)		REFERENCES Festival(festivalID),
-	FOREIGN KEY (artistID)			REFERENCES Artist(artistID),
-	PRIMARY KEY (festivalID, artistID)
-);
-
-CREATE TABLE TicketType (
-	ticketTypeID	INT IDENTITY	PRIMARY KEY,
-	[type]			VARCHAR(255)	NOT NULL,
-	price			MONEY			NOT NULL,
-);
-
-CREATE TABLE FestivalTicketType (
-	festivalID		INT				NOT NULL,
-	ticketTypeID	INT				NOT NULL,
-	quantity		INT				NOT NULL,
-	FOREIGN KEY (festivalID)		REFERENCES Festival(festivalID),
-	FOREIGN KEY (ticketTypeID)		REFERENCES TicketType([ticketTypeID]),
-	PRIMARY KEY (festivalID, ticketTypeID)
-);
-
-CREATE TABLE Ticket (
-	ticketID		INT IDENTITY	PRIMARY KEY,
-	orderID			INT				NOT NULL,
-	festivalID		INT				NOT NULL,
-	ticketTypeID	INT				NOT NULL,
-	FOREIGN KEY (festivalID)		REFERENCES Festival(festivalID),
-	FOREIGN KEY (ticketTypeID)		REFERENCES TicketType(ticketTypeID),
-	FOREIGN KEY (orderID)			REFERENCES [Order](orderID)
-);
-
-/* Seed tables */
-
 /* Seed TicketType */
 INSERT INTO TicketType VALUES('General Admission', 50.00);
+INSERT INTO TicketType VALUES('VIP', 100.00);
 
 /* Seed Artist */
 INSERT INTO Artist (artistName, artistBio, imgPath) VALUES('Billy Talent', 'Billy Talent is a Canadian rock band from Mississauga, Ontario. They formed in 1993 with lead vocalist Benjamin Kowalewicz, guitarist Ian D Sa, bassist Jonathan Gallant, and drummer Aaron Solowoniuk.In the 28 years since their inception, Billy Talent has sold well over a million physical albums in Canada alone and nearly 3 million albums internationally.','billy-talent-2012.jpg');
@@ -99,6 +22,7 @@ INSERT INTO Festival VALUES(CONVERT(DATE, '06/03/2023', 101), 'Vancouver', 1);
 
 /* Seed FestivalTicketType */
 INSERT INTO FestivalTicketType VALUES(1, 1, 20000);
+INSERT INTO FestivalTicketType VALUES(1, 2, 10);
 
 /* Seed FestivalArtist */
 INSERT INTO FestivalArtist VALUES(1, 1);
@@ -108,5 +32,33 @@ INSERT INTO FestivalArtist VALUES(1, 4);
 INSERT INTO FestivalArtist VALUES(1, 5);
 INSERT INTO FestivalArtist VALUES(1, 6);
 INSERT INTO FestivalArtist VALUES(1, 7);
+
+/* Seed User table with a default admin user */
+INSERT INTO [User] VALUES('admin@home.com', 'Smith', 'Bob', 1);
+
+/* Seed AspNetUsers table with the default admin identity user */
+INSERT INTO AspNetUsers VALUES(
+	'f903e641-5e27-4eb9-bd68-dbf111815b11',
+	'admin@home.com',
+	'ADMIN@HOME.COM',
+	'admin@home.com',
+	'ADMIN@HOME.COM',
+	1,
+	'AQAAAAIAAYagAAAAEDGgzbGWc2E30xB51HWXoAmREx38AjYk0smd4PuVTRzpAzSpFyDlpvVk+i4E2dVI3Q==',
+	'NNT5KYXRUHESXLER7BWRWAQ2IDX3OHPQ',
+	'f1a5fffb-e034-4dd0-8a6c-66e3be7327b4',
+	NULL,
+	0,
+	0,
+	NULL,
+	1,
+	0
+);
+
+/* Seed the AspNetRoles table with the admin role as an identity role */
+INSERT INTO AspNetRoles VALUES('Admin', 'Admin', 'ADMIN', NULL);
+
+/* Seed the AspNetUserRoles bridge table to assign the admin identity role to the default admin identity user */
+INSERT INTO AspNetUserRole VALUES('f903e641-5e27-4eb9-bd68-dbf111815b11', 'Admin');
 
 COMMIT;
