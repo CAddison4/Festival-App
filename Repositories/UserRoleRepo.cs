@@ -47,7 +47,7 @@ namespace TeamRedInternalProject.Repositories
 
         public bool UpdateUser(string email)
         {
-            UserRepo userRepo = new UserRepo();
+            UserRepo userRepo = new UserRepo(_db);
             User user = userRepo.GetUsersByEmail(email);
             
             try
@@ -68,7 +68,7 @@ namespace TeamRedInternalProject.Repositories
         // Remove role from a user.
         public async Task<bool> RemoveUserRole(string email, string roleName)
         {
-            UserRepo userRepo = new UserRepo();
+            UserRepo userRepo = new UserRepo(_db);
             var user = await _userManager.FindByEmailAsync(email);
             User adminUser = userRepo.GetUsersByEmail(email);
             if (user != null)

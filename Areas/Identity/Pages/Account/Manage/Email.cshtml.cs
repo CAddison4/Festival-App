@@ -35,7 +35,7 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
             _emailSender = emailSender;
             _concertContext = concertContext;
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(concertContext);
         }
 
         /// <summary>

@@ -44,7 +44,8 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IConfiguration configuration,
             IEmailSender emailSender,
-            IEmailService emailService)
+            IEmailService emailService,
+            ConcertContext db)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -52,7 +53,7 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(db);
             _emailService = emailService;
             _configuration= configuration;
         }

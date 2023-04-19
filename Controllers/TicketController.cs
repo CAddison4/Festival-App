@@ -34,7 +34,7 @@ namespace TeamRedInternalProject.Controllers
             _env = env;
             _db = db;
             _logger = logger;
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(db);
             _ticketRepo= new TicketRepo(db);
             _ticketTypeRepo = new TicketTypeRepo(db);
             _orderRepo = new OrderRepo(db);

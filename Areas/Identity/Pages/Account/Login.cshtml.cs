@@ -25,11 +25,11 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly UserRepo _userRepo;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ConcertContext db)
         {
             _signInManager = signInManager;
             _logger = logger;
-            _userRepo= new UserRepo();
+            _userRepo= new UserRepo(db);
 
         }
 

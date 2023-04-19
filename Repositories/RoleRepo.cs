@@ -10,10 +10,10 @@ namespace TeamRedInternalProject.Repositories
         private readonly IServiceProvider _serviceProvider;
         private readonly ConcertContext _db;
         private RoleManager<IdentityRole> _roleManager;
-        public RoleRepo(IServiceProvider serviceProvider)
+        public RoleRepo(IServiceProvider serviceProvider, ConcertContext db)
         {
             _serviceProvider = serviceProvider;
-            _db = new();
+            _db = db;
             _roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
         }

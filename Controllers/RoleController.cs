@@ -25,9 +25,9 @@ namespace TeamRedInternalProject.Controllers
         {
             _logger = logger;
             _serviceProvider= serviceProvider;
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(db);
             _userRoleRepo = new UserRoleRepo(serviceProvider, db);
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(db);
             _db = db;
         }
         // GET: RoleController
@@ -99,7 +99,7 @@ namespace TeamRedInternalProject.Controllers
         {
             ViewBag.SelectedUser = email;
 
-            RoleRepo roleRepo = new RoleRepo(_serviceProvider);
+            RoleRepo roleRepo = new RoleRepo(_serviceProvider, _db);
             var roles = roleRepo.GetAllRoles().ToList();
             if (roles == null || roles.Count == 0)
             {

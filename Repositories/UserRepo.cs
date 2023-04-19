@@ -8,9 +8,9 @@ namespace TeamRedInternalProject.Repositories
     public class UserRepo
     {
         private readonly ConcertContext _db;
-        public UserRepo()
+        public UserRepo(ConcertContext db)
         {
-            _db = new();
+            _db = db;
         }
 
         /// <summary>

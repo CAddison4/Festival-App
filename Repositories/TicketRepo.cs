@@ -14,7 +14,7 @@ namespace TeamRedInternalProject.Repositories
         public TicketRepo(ConcertContext db)
         {
             _db = db;
-            _userRepo= new UserRepo();
+            _userRepo= new UserRepo(db);
         }
 
         /// <summary>

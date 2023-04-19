@@ -29,7 +29,7 @@ namespace TeamRedInternalProject.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
             _concertContext = concertContext;
-            _userRepo = new UserRepo();
+            _userRepo = new UserRepo(concertContext);
         }
 
         /// <summary>
