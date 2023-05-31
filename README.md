@@ -4,4 +4,6 @@ For our Internal Project of the SSD Program at BCIT, we built a fully-functional
 
 Technologies used: ASP.NET MVC with Entity and Identity Frameworks, MS SQL, SendGrid, PayPal, ReCaptcha.
 
+[Website](https://internalproject.azurewebsites.net/)
+
 [Click here](https://docs.google.com/document/d/14Z0xeXJ2QotI1dm3VLGmXY7fQMCPNBzM493BJcQ865c/view) for a detailed project description, with use case diagrams, ERD, and wireframes, as well as project SCRUM log and GANTT chart.
