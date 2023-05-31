@@ -8,7 +8,7 @@ Technologies used: ASP.NET MVC with Entity and Identity Frameworks, MS SQL, Send
 
 [Website](https://internalproject.azurewebsites.net/)
 
-Admin Account for exploring role-based functionality.
+Admin Account (for role-based functionality):
 
 Username: admin@home.com <br>
 Password: P@ssw0rd!
