@@ -6,4 +6,4 @@ Technologies used: ASP.NET MVC with Entity and Identity Frameworks, MS SQL, Send
 
 [Website](https://internalproject.azurewebsites.net/)
 
-[Project Documentation](https://docs.google.com/document/d/14Z0xeXJ2QotI1dm3VLGmXY7fQMCPNBzM493BJcQ865c/view) (use case diagrams, ERD, wireframes, SCRUM log, and GANTT chart).
+[Project Documentation](https://docs.google.com/document/d/14Z0xeXJ2QotI1dm3VLGmXY7fQMCPNBzM493BJcQ865c/view) (use case diagrams, ERD, wireframes, SCRUM log, and GANTT chart)
