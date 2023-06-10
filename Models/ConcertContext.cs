@@ -46,7 +46,7 @@ public partial class ConcertContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionStrings")["DefaultConnection"]);
+        => optionsBuilder.UseSqlServer(_configuration.GetSection("ConnectionStrings")["Production"]);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
